@@ -18,26 +18,26 @@ I'm a software engineer who has specialised in backend infrastructure for blockc
 
 ### [dipper](https://github.com/edgeandnode/dipper) (Rust)
 
-I took ownership of the dipper codebase between December 2025 and September 2026. dipper is a payments gateway for The Graph that manages Direct Indexer Payments on The Graph.
+I owned the dipper codebase from December 2025 to September 2026. dipper is a payments gateway for The Graph that manages Direct Indexer Payments on The Graph.
 
-Components include (but not limited to):
+Components include (but are not limited to):
 - Postgres
 - RPC
 - gRPC
-- On chain indexing agreement offers
+- On-chain indexing agreement offers
 - Escrow management
 
 [See my merged changes](https://github.com/edgeandnode/dipper/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged).
 
 ### [subgraph-dips-indexer-selection](https://github.com/edgeandnode/subgraph-dips-indexer-selection) (Python)
 
-I owned this repo from prototype to production deployment. This service picks which indexers are selected to receive paid subgraph indexing agreements. It runs a daily job that replays over a billion gateway query records from Redpanda and takes a selection of that data for a linear regression to determine which indexers have the best latency score. This score is then used as a contrinuting factor in indexer selection, blended with other factors such as indexer price, uptime and success rate.
+I owned this repo from prototype to production deployment. This service picks which indexers are selected to receive paid subgraph indexing agreements. It runs a daily job that replays over a billion gateway query records from Redpanda and takes a selection of that data for a linear regression to determine which indexers have the best latency score. This score is then used as a contributing factor in indexer selection, blended with other factors such as indexer price, uptime and success rate.
 
 [See my merged changes](https://github.com/edgeandnode/subgraph-dips-indexer-selection/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged).
 
 ### [indexer-rs](https://github.com/graphprotocol/indexer-rs) (Rust)
 
-This is the service indexers run to receive, verify and answer indexing agreement proposals. I contributed between January and September 2026.
+This is the service indexers run to receive, verify and answer indexing agreement proposals. I contributed to it between January and September 2026.
 
 [See my merged changes](https://github.com/graphprotocol/indexer-rs/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged).
 

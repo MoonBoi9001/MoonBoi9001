@@ -25,12 +25,12 @@
     <style>
       /* the constellation draws itself in once over the first 7 seconds, then holds so it can be read */
       .cline {
-        stroke-dasharray: 1110;
+        stroke-dasharray: 1170;
         animation: draw 22s linear 1 forwards;
       }
       @keyframes draw {
-        0%    { stroke-dashoffset: 1110; }
-        4.5%  { stroke-dashoffset: 1110; }
+        0%    { stroke-dashoffset: 1170; }
+        4.5%  { stroke-dashoffset: 1170; }
         32%   { stroke-dashoffset: 0; }
         100%  { stroke-dashoffset: 0; }
       }
@@ -51,17 +51,17 @@
       .caption { animation: captionIn 22s linear 1 both; }
       @keyframes ignite1 { 0%, 4.5% { opacity: 0; } 6.0% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite2 { 0%, 6.8% { opacity: 0; } 8.3% { opacity: 1; } 100% { opacity: 1; } }
-      @keyframes ignite3 { 0%, 8.8% { opacity: 0; } 10.3% { opacity: 1; } 100% { opacity: 1; } }
+      @keyframes ignite3 { 0%, 8.7% { opacity: 0; } 10.2% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite4 { 0%, 11.1% { opacity: 0; } 12.6% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite5 { 0%, 13.0% { opacity: 0; } 14.5% { opacity: 1; } 100% { opacity: 1; } }
-      @keyframes ignite6 { 0%, 15.4% { opacity: 0; } 16.9% { opacity: 1; } 100% { opacity: 1; } }
+      @keyframes ignite6 { 0%, 15.3% { opacity: 0; } 16.8% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite7 { 0%, 17.3% { opacity: 0; } 18.8% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite8 { 0%, 19.6% { opacity: 0; } 21.1% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite9 { 0%, 21.5% { opacity: 0; } 23.0% { opacity: 1; } 100% { opacity: 1; } }
-      @keyframes ignite10 { 0%, 23.9% { opacity: 0; } 25.4% { opacity: 1; } 100% { opacity: 1; } }
+      @keyframes ignite10 { 0%, 23.8% { opacity: 0; } 25.3% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite11 { 0%, 25.8% { opacity: 0; } 27.3% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite12 { 0%, 28.1% { opacity: 0; } 29.6% { opacity: 1; } 100% { opacity: 1; } }
-      @keyframes ignite13 { 0%, 30.1% { opacity: 0; } 31.6% { opacity: 1; } 100% { opacity: 1; } }
+      @keyframes ignite13 { 0%, 30.0% { opacity: 0; } 31.5% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite14 { 0%, 32.0% { opacity: 0; } 33.5% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes captionIn { 0%, 34% { opacity: 0; } 38%   { opacity: 1; } 100% { opacity: 1; } }
       /* background stars breathe on their own slow clocks */
@@ -99,7 +99,6 @@
     <!-- background starfield -->
     <g class="stars" fill="#5B6B8A">
       <circle cx="60" cy="34" r="1.2" fill-opacity="0.55"/>
-      <circle cx="1108" cy="38" r="1" fill-opacity="0.4"/>
       <circle cx="205" cy="30" r="1.4" fill-opacity="0.6"/>
       <circle cx="282" cy="58" r="1" fill-opacity="0.35"/>
       <circle cx="352" cy="26" r="1.2" fill-opacity="0.5"/>
@@ -108,7 +107,6 @@
       <circle cx="540" cy="22" r="1" fill-opacity="0.45"/>
       <circle cx="602" cy="58" r="1.2" fill-opacity="0.4"/>
       <circle cx="724" cy="24" r="1.3" fill-opacity="0.6"/>
-      <circle cx="846" cy="70" r="1.2" fill-opacity="0.5"/>
       <circle cx="890" cy="20" r="1" fill-opacity="0.45"/>
       <circle cx="962" cy="66" r="1.2" fill-opacity="0.45"/>
       <circle cx="1032" cy="96" r="1" fill-opacity="0.4"/>
@@ -154,77 +152,77 @@
 
     <!-- the constellation: a rising chart that draws itself in -->
     <g class="scene">
-      <polyline class="cline" points="165,261 232,196 300,235 367,170 434,209 502,144 569,183 636,117 703,156 771,91 838,130 905,65 973,104 1040,65"
+      <polyline class="cline" points="165,266 238,200 310,238 383,171 456,209 528,143 601,181 674,114 747,152 819,86 892,124 965,57 1037,95 1110,55"
                 fill="none" stroke="#6d80a6" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <g class="v1">
-        <circle cx="165" cy="261" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="165" cy="261" r="5" fill="#c98a12"/>
-        <text x="165" y="288" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Rust</text>
+        <circle cx="165" cy="266" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="165" cy="266" r="5" fill="#c98a12"/>
+        <text x="165" y="293" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Rust</text>
       </g>
       <g class="v2">
-        <circle cx="232" cy="196" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="232" cy="196" r="5" fill="#c98a12"/>
-        <text x="232" y="180" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Python</text>
+        <circle cx="238" cy="200" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="238" cy="200" r="5" fill="#c98a12"/>
+        <text x="238" y="184" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Python</text>
       </g>
       <g class="v3">
-        <circle cx="300" cy="235" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="300" cy="235" r="5" fill="#c98a12"/>
-        <text x="300" y="262" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Go</text>
+        <circle cx="310" cy="238" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="310" cy="238" r="5" fill="#c98a12"/>
+        <text x="310" y="265" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Go</text>
       </g>
       <g class="v4">
-        <circle cx="367" cy="170" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="367" cy="170" r="5" fill="#c98a12"/>
-        <text x="367" y="154" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">TypeScript</text>
+        <circle cx="383" cy="171" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="383" cy="171" r="5" fill="#c98a12"/>
+        <text x="383" y="155" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">TypeScript</text>
       </g>
       <g class="v5">
-        <circle cx="434" cy="209" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="434" cy="209" r="5" fill="#c98a12"/>
-        <text x="434" y="236" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">SQL</text>
+        <circle cx="456" cy="209" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="456" cy="209" r="5" fill="#c98a12"/>
+        <text x="456" y="236" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">SQL</text>
       </g>
       <g class="v6">
-        <circle cx="502" cy="144" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="502" cy="144" r="5" fill="#c98a12"/>
-        <text x="502" y="128" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">PostgreSQL</text>
+        <circle cx="528" cy="143" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="528" cy="143" r="5" fill="#c98a12"/>
+        <text x="528" y="127" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">PostgreSQL</text>
       </g>
       <g class="v7">
-        <circle cx="569" cy="183" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="569" cy="183" r="5" fill="#c98a12"/>
-        <text x="569" y="210" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">GraphQL</text>
+        <circle cx="601" cy="181" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="601" cy="181" r="5" fill="#c98a12"/>
+        <text x="601" y="208" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">GraphQL</text>
       </g>
       <g class="v8">
-        <circle cx="636" cy="117" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="636" cy="117" r="5" fill="#c98a12"/>
-        <text x="636" y="101" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Docker</text>
+        <circle cx="674" cy="114" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="674" cy="114" r="5" fill="#c98a12"/>
+        <text x="674" y="98" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Docker</text>
       </g>
       <g class="v9">
-        <circle cx="703" cy="156" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="703" cy="156" r="5" fill="#c98a12"/>
-        <text x="703" y="183" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Kafka</text>
+        <circle cx="747" cy="152" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="747" cy="152" r="5" fill="#c98a12"/>
+        <text x="747" y="179" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Kafka</text>
       </g>
       <g class="v10">
-        <circle cx="771" cy="91" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="771" cy="91" r="5" fill="#c98a12"/>
-        <text x="771" y="75" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Redpanda</text>
+        <circle cx="819" cy="86" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="819" cy="86" r="5" fill="#c98a12"/>
+        <text x="819" y="70" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Redpanda</text>
       </g>
       <g class="v11">
-        <circle cx="838" cy="130" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="838" cy="130" r="5" fill="#c98a12"/>
-        <text x="838" y="157" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Ansible</text>
+        <circle cx="892" cy="124" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="892" cy="124" r="5" fill="#c98a12"/>
+        <text x="892" y="151" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Ansible</text>
       </g>
       <g class="v12">
-        <circle cx="905" cy="65" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="905" cy="65" r="5" fill="#c98a12"/>
-        <text x="905" y="49" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Kubernetes</text>
+        <circle cx="965" cy="57" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="965" cy="57" r="5" fill="#c98a12"/>
+        <text x="965" y="41" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Kubernetes</text>
       </g>
       <g class="v13">
-        <circle cx="973" cy="104" r="11" fill="#c98a12" fill-opacity="0.28"/>
-        <circle cx="973" cy="104" r="5" fill="#c98a12"/>
-        <text x="973" y="131" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Proxmox</text>
+        <circle cx="1037" cy="95" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="1037" cy="95" r="5" fill="#c98a12"/>
+        <text x="1037" y="122" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Proxmox</text>
       </g>
       <g class="vspark">
-        <circle cx="1040" cy="65" r="13" fill="#c98a12" fill-opacity="0.28"/>
-        <use href="#sparkle" transform="translate(1040,65) scale(1.5)"/>
-        <text x="1030" y="45" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Solidity</text>
+        <circle cx="1110" cy="55" r="13" fill="#c98a12" fill-opacity="0.28"/>
+        <use href="#sparkle" transform="translate(1110,55) scale(1.5)"/>
+        <text x="1100" y="35" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Solidity</text>
       </g>
     </g>
 
@@ -254,18 +252,18 @@
 
     <!-- the bot peering through its telescope at the last star -->
     <g>
-      <g transform="translate(958,98)">
+      <g transform="translate(1020,98)">
         <line x1="0" y1="4" x2="-16" y2="56" stroke="#1F2440" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="0" y1="4" x2="16" y2="56" stroke="#1F2440" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="0" y1="4" x2="0" y2="58" stroke="#1F2440" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
-        <g transform="rotate(23)">
+        <g transform="rotate(24)">
           <rect x="-6" y="14" width="11" height="9" rx="2.5" fill="#4A3DB8" stroke="#3A22A6" stroke-opacity="0.55" stroke-width="1.2"/>
           <rect x="-5" y="-14" width="9" height="30" rx="4" fill="#4A3DB8" stroke="#3A22A6" stroke-opacity="0.55" stroke-width="1.4"/>
           <rect x="-6.5" y="-17" width="12" height="5" rx="2.4" fill="#4A3DB8" stroke="#3A22A6" stroke-opacity="0.55" stroke-width="1.4"/>
         </g>
       </g>
-      <line class="sight" x1="952" y1="83" x2="1040" y2="-87" stroke="#3B4A8C" stroke-opacity="0.45" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round"/>
-      <g transform="translate(930,132) scale(0.95)">
+      <line class="sight" x1="1026" y1="83" x2="1110" y2="-97" stroke="#3B4A8C" stroke-opacity="0.45" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+      <g transform="translate(992,132) scale(0.95)">
         <line x1="13" y1="-4" x2="19" y2="-11" stroke="#9A8CF0" stroke-opacity="0.95" stroke-width="3.4" stroke-linecap="round"/>
         <circle cx="20" cy="-13" r="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#9A8CF0" stroke-width="1"/>
         <use href="#bot"/>

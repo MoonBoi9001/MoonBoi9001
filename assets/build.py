@@ -41,7 +41,7 @@ def constellation():
     p = OUT / "banner-dark.svg"
     s = p.read_text()
     n = len(STARS)
-    x0, x1, y0, y1, amp = 165, 1040, 235, 65, 26
+    x0, x1, y0, y1, amp = 165, 1110, 240, 55, 26
     pts = []
     for i, name in enumerate(STARS):
         f = i / (n - 1)
@@ -101,7 +101,7 @@ def constellation():
     ty += ground                                 # the telescope's pivot, in banner rather than moon coordinates
     angle = math.degrees(math.atan2(ex - tx, ty - ey))   # 0 is straight up, positive leans right
     s = re.sub(r'<g transform="rotate\(-?[\d.]+\)">', f'<g transform="rotate({angle:.0f})">', s)
-    sx = round(tx - 16 * math.sin(math.radians(angle)))
+    sx = round(tx + 16 * math.sin(math.radians(angle)))   # 16 units up the tilted tube, at its far end
     sy = round(ty - 16 * math.cos(math.radians(angle))) - ground
     s = re.sub(r'<line class="sight" x1="-?\d+" y1="-?\d+" x2="-?\d+" y2="-?\d+"', f'<line class="sight" x1="{sx}" y1="{sy}" x2="{ex}" y2="{ey - ground + 8}"', s)
     # background stars must not sit inside a label; drop any that do (labels are 15px mono, ~9px per glyph)

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 189" width="440" height="189" role="img" aria-label="subgraph-dips-indexer-selection (IISA), Python: This service uses a selection algorithm to pick the best indexers to serve paid indexing agreements on each subgraph, minimising gateway cost and latency while maximising decentralisation, success rate and uptime." font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121b31"/><stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="438" height="187" rx="12" fill="url(#bg)" stroke="#2e3a52" stroke-width="1.5"/>
+  <polyline points="350,44 363,33 376,37 390,22 403,26 417,12" fill="none" stroke="#8ea6dc" stroke-width="1.2" stroke-opacity="0.55"/>
+  <g fill="#ffd772"><circle cx="350" cy="44" r="1.9"/><circle cx="363" cy="33" r="1.9"/><circle cx="376" cy="37" r="1.9"/><circle cx="390" cy="22" r="1.9"/><circle cx="403" cy="26" r="1.9"/><circle cx="417" cy="12" r="2.8"/></g>
+  <circle cx="29" cy="34" r="5" fill="#3572A5"/>
+  <text x="41" y="38.5" font-size="13" fill="#9198a1">Python</text>
+  <text x="24" y="74" font-size="18" font-weight="700" fill="#f0f6fc">subgraph-dips-indexer-selection <tspan font-weight="400" fill="#9198a1">(IISA)</tspan></text>
+  <text font-size="14.5" fill="#f0f6fc" fill-opacity="0.88"><tspan x="24" y="104">This service uses a selection algorithm to pick the best</tspan><tspan x="24" y="125">indexers to serve paid indexing agreements on each</tspan><tspan x="24" y="146">subgraph, minimising gateway cost and latency while</tspan><tspan x="24" y="167">maximising decentralisation, success rate and uptime.</tspan></text>
+</svg>

@@ -15,14 +15,16 @@ from pathlib import Path
 OUT = Path(__file__).parent
 # the constellation's colours, shared by the banner and the project cards so the 2 always match
 CHART = {"dark": dict(star="#ffd772", line="#8ea6dc"), "light": dict(star="#c98a12", line="#6d80a6")}
+LABELS = {"dark": "#c8d3ec", "light": "#34425c"}     # the banner's skill names
+SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
 
 
 def label_offset(i, y, neighbours, n):
     """Where a star's label sits: above peaks, below dips, so it never crosses the lines either side."""
     if i == n - 1:
-        return -10, -18            # the brightest star is a peak, so its label sits above it too
+        return -10, -20            # the brightest star is a peak, so its label sits above it too
     above = y <= sum(neighbours) / len(neighbours)
-    return (0, -16) if above else (0, 22)
+    return (0, -16) if above else (0, 27)
 
 
 STARS = ["Rust", "Python", "Go", "TypeScript", "SQL", "PostgreSQL", "GraphQL", "Docker", "Kafka",
@@ -68,21 +70,21 @@ def constellation():
     s = re.sub(r'(0%|4\.5%)(\s+)\{ stroke-dashoffset: \d+; \}', rf'\1\2{{ stroke-dashoffset: {dash}; }}', s)
     s = re.sub(r'(32%|100%)(\s+)\{ stroke-dashoffset: \d+; \}', r'\1\2{ stroke-dashoffset: 0; }', s)
     # vertices
-    FONT = 'ui-monospace, SFMono-Regular, Menlo, monospace'
     poly = " ".join(f"{x},{y}" for _, x, y in pts)
     verts = []
     for i, (t, x, y) in enumerate(pts):
         nb = [pts[j][2] for j in (i - 1, i + 1) if 0 <= j < n]
         dx, dy = label_offset(i, y, nb, n)
-        label = f'<text x="{x+dx}" y="{y+dy}" text-anchor="middle" font-family="{FONT}" font-size="15" fill="#FFFFFF" fill-opacity="0.8">{t}</text>'
+        label = (f'<text x="{x+dx}" y="{y+dy}" text-anchor="middle" font-family="{SANS}" font-size="15" '
+                 f'font-weight="600" fill="{LABELS["dark"]}">{t}</text>')
+        star = CHART["dark"]["star"]
         if i == n - 1:
-            verts.append(f'      <g class="vspark">\n        <circle cx="{x}" cy="{y}" r="7" fill="{CHART['dark']['star']}" fill-opacity="0.12"/>\n        <use href="#sparkle" transform="translate({x},{y})"/>\n        {label}\n      </g>')
+            verts.append(f'      <g class="vspark">\n        <circle cx="{x}" cy="{y}" r="13" fill="{star}" fill-opacity="0.28"/>\n        <use href="#sparkle" transform="translate({x},{y}) scale(1.5)"/>\n        {label}\n      </g>')
         else:
-            r, o = (2.2, 0.95) if i % 2 else (1.9, 0.85)
-            verts.append(f'      <g class="v{i+1}">\n        <circle cx="{x}" cy="{y}" r="5" fill="{CHART['dark']['star']}" fill-opacity="0.1"/>\n        <circle cx="{x}" cy="{y}" r="{r}" fill="{CHART['dark']['star']}" fill-opacity="{o}"/>\n        {label}\n      </g>')
+            verts.append(f'      <g class="v{i+1}">\n        <circle cx="{x}" cy="{y}" r="11" fill="{star}" fill-opacity="0.28"/>\n        <circle cx="{x}" cy="{y}" r="5" fill="{star}"/>\n        {label}\n      </g>')
     a = s.index('      <polyline class="cline"')
-    b = s.index('      <text class="caption"')
-    s = (s[:a] + f'      <polyline class="cline" points="{poly}"\n                fill="none" stroke="{CHART['dark']['line']}" stroke-opacity="0.55" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>\n'
+    b = s.index('\n    </g>', a) + 1         # the end of the constellation's group
+    s = (s[:a] + f'      <polyline class="cline" points="{poly}"\n                fill="none" stroke="{CHART['dark']['line']}" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n'
          + "\n".join(verts) + "\n" + s[b:])
     s, count = re.subn(r'(<g id="sparkle">\s*<path [^>]*? fill=")#\w+"', rf'\g<1>{CHART["dark"]["star"]}"', s)
     assert count == 1, "sparkle for the brightest star not found"
@@ -125,21 +127,26 @@ def swap(text, old, new):
 
 
 def light_banner():
-    """Recolour the hand-drawn dark banner into a dawn edition: pale sky, navy stars and lines."""
+    """Recolour the hand-drawn dark banner into a dawn edition: a pale sky warming towards the horizon."""
     s = (OUT / "banner-dark.svg").read_text()
-    # sky: a pale blue dawn, deepening towards the horizon
+    # sky: a soft blue-grey dawn, warming to off-white at the horizon
     s = re.sub(r'(<linearGradient id="sky".*?</linearGradient>)',
                '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">'
-               '<stop offset="0%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>', s, flags=re.S)
-    s = swap(s, 'stop-color="#C2C7D6"', 'stop-color="#D3D8E6"')
-    s = swap(s, 'stop-color="#848BA1"', 'stop-color="#AEB5C8"')
-    # everything white in the sky (stars, labels, caption, shooting star, flag pole) becomes navy, and the
-    # constellation's gold stars and blue-grey line take their light versions
+               '<stop offset="0%" stop-color="#CFDCF0"/><stop offset="100%" stop-color="#F3EEE6"/></linearGradient>', s, flags=re.S)
+    s = swap(s, 'stop-color="#CFCAC0"', 'stop-color="#DCD8CF"')      # the moon, a little paler by day
+    s = swap(s, 'stop-color="#A29D93"', 'stop-color="#D2CDC3"')
+    # the background stars turn slate and the shooting star navy; the constellation and planet take their
+    # light versions
     head, rest = s.split('<!-- background starfield -->', 1)
     sky, ground = rest.split('<!-- the moon surface -->', 1)
+    sky = swap(sky, '<g class="stars" fill="#FFFFFF">', '<g class="stars" fill="#5B6B8A">')
     sky = swap(sky, '#FFFFFF', '#1F2440')
     for part in ("star", "line"):
         sky = swap(sky, CHART["dark"][part], CHART["light"][part])
+    sky = swap(sky, LABELS["dark"], LABELS["light"])
+    sky = swap(sky, '#5D6F99', '#9AAED0')
+    ground = swap(ground, 'stroke="#EAE5DB" stroke-opacity="0.8"', 'stroke="#C4BFB3" stroke-opacity="1"')
+    ground = swap(ground, 'fill="#3F4452" fill-opacity="0.85">star chart', 'fill="#5C6474" fill-opacity="1">star chart')
     ground = swap(ground, 'stroke="#F2F4FA"', 'stroke="#1F2440"')
     ground = swap(ground, 'stroke="#E8EAF2"', 'stroke="#1F2440"')
     ground = swap(ground, 'stroke="#B7A6FF"', 'stroke="#3A22A6"')
@@ -154,7 +161,6 @@ def light_banner():
     head = swap(head, f'Z" fill="{CHART["dark"]["star"]}"', f'Z" fill="{CHART["light"]["star"]}"')
     head = swap(head, '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#FFFFFF" stroke-opacity="0.9"', '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#1F2440" stroke-opacity="0.9"')
     head = swap(head, 'A quiet moonscape at night', 'A quiet moonscape at dawn')
-    sky = swap(sky, 'fill-opacity="0.65">star chart, not price chart', 'fill-opacity="0.75">star chart, not price chart')
     out = head + '<!-- background starfield -->' + sky + '<!-- the moon surface -->' + ground
     (OUT / "banner-light.svg").write_text(out)
     print("wrote banner-light.svg", f"{len(out)//1024} KB")
@@ -183,7 +189,6 @@ CARD_THEMES = {
     "dark": dict(top="#121b31", bottom="#0d1117", edge="#2e3a52", ink="#f0f6fc", muted="#9198a1", line=CHART["dark"]["line"],
                  star=CHART["dark"]["star"], strip="#151b23", link="#4493f8", rule="#3d444d"),
 }
-SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
 MERGED = "/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged"
 CARDS = OUT / "cards"
 WRAP = 57          # characters per summary line; 57 fits the 440-wide card in GitHub's system fonts

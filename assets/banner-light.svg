@@ -1,17 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="1200" height="380" role="img" aria-label="A quiet moonscape at dawn: a small robot with a telescope watches a constellation shaped like a rising chart draw itself across the sky with a star for each of Rust, Python, Go, TypeScript, SQL, PostgreSQL, GraphQL, Docker, Kafka, Redpanda, Ansible, Kubernetes, Proxmox and Solidity, a purple flag stands planted in the surface, and the caption reads star chart, not price chart">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#CFDCF0"/><stop offset="100%" stop-color="#F3EEE6"/></linearGradient>
     <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#D3D8E6"/>
-      <stop offset="100%" stop-color="#AEB5C8"/>
+      <stop offset="0%" stop-color="#DCD8CF"/>
+      <stop offset="100%" stop-color="#D2CDC3"/>
     </linearGradient>
-    <radialGradient id="earthball" cx="0.35" cy="0.35" r="0.9">
-      <stop offset="0%" stop-color="#5B9BF0"/>
-      <stop offset="70%" stop-color="#2E6FDB"/>
-      <stop offset="100%" stop-color="#1B4CA8"/>
-    </radialGradient>
     <clipPath id="frame"><rect width="1200" height="380" rx="14"/></clipPath>
-    <clipPath id="earthclip"><circle cx="100" cy="80" r="13"/></clipPath>
     <!-- a 4-point sparkle for the brightest star -->
     <g id="sparkle">
       <path d="M0,-6 L1.4,-1.4 L6,0 L1.4,1.4 L0,6 L-1.4,1.4 L-6,0 L-1.4,-1.4 Z" fill="#c98a12" fill-opacity="0.95"/>
@@ -102,7 +96,7 @@
   <g clip-path="url(#frame)">
 
     <!-- background starfield -->
-    <g class="stars" fill="#1F2440">
+    <g class="stars" fill="#5B6B8A">
       <circle cx="60" cy="34" r="1.2" fill-opacity="0.55"/>
       <circle cx="1108" cy="38" r="1" fill-opacity="0.4"/>
       <circle cx="205" cy="30" r="1.4" fill-opacity="0.6"/>
@@ -150,109 +144,104 @@
       <line x1="620" y1="8" x2="652" y2="17" stroke="#1F2440" stroke-opacity="0.9" stroke-width="1.6" stroke-linecap="round"/>
     </g>
 
-    <!-- earth, small and far away in the empty corner of the sky -->
-    <g>
-      <circle cx="100" cy="80" r="14.5" fill="#5B9BF0" fill-opacity="0.18"/>
-      <circle cx="100" cy="80" r="13" fill="url(#earthball)"/>
-      <g clip-path="url(#earthclip)">
-        <path d="M90,74 q5,-4 10,-1 q4,2 1,6 q-5,3 -9,0 q-4,-2 -2,-5 Z" fill="#3FA968" fill-opacity="0.9"/>
-        <path d="M100,87 q6,-3 10,1 q2,3 -2,5 q-6,2 -9,-2 q-2,-2 1,-4 Z" fill="#3FA968" fill-opacity="0.85"/>
-        <circle cx="106" cy="75" r="13" fill="#04050E" fill-opacity="0.3"/>
-      </g>
+    <!-- a ringed planet in the empty corner of the sky; the ring passes behind it, then in front -->
+    <g transform="translate(100,80) rotate(-16)" fill="none" stroke="#9AAED0" stroke-width="2.5" stroke-opacity="0.8">
+      <path d="M-28,0 A28,7 0 0,1 28,0"/>
+      <circle r="15" fill="#9AAED0" fill-opacity="0.9" stroke="none"/>
+      <path d="M-28,0 A28,7 0 0,0 28,0"/>
     </g>
 
     <!-- the constellation: a rising chart that draws itself in -->
     <g class="scene">
       <polyline class="cline" points="165,261 232,196 300,235 367,170 434,209 502,144 569,183 636,117 703,156 771,91 838,130 905,65 973,104 1040,65"
-                fill="none" stroke="#6d80a6" stroke-opacity="0.55" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                fill="none" stroke="#6d80a6" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <g class="v1">
-        <circle cx="165" cy="261" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="165" cy="261" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="165" y="283" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Rust</text>
+        <circle cx="165" cy="261" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="165" cy="261" r="5" fill="#c98a12"/>
+        <text x="165" y="288" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Rust</text>
       </g>
       <g class="v2">
-        <circle cx="232" cy="196" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="232" cy="196" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="232" y="180" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Python</text>
+        <circle cx="232" cy="196" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="232" cy="196" r="5" fill="#c98a12"/>
+        <text x="232" y="180" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Python</text>
       </g>
       <g class="v3">
-        <circle cx="300" cy="235" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="300" cy="235" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="300" y="257" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Go</text>
+        <circle cx="300" cy="235" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="300" cy="235" r="5" fill="#c98a12"/>
+        <text x="300" y="262" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Go</text>
       </g>
       <g class="v4">
-        <circle cx="367" cy="170" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="367" cy="170" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="367" y="154" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">TypeScript</text>
+        <circle cx="367" cy="170" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="367" cy="170" r="5" fill="#c98a12"/>
+        <text x="367" y="154" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">TypeScript</text>
       </g>
       <g class="v5">
-        <circle cx="434" cy="209" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="434" cy="209" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="434" y="231" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">SQL</text>
+        <circle cx="434" cy="209" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="434" cy="209" r="5" fill="#c98a12"/>
+        <text x="434" y="236" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">SQL</text>
       </g>
       <g class="v6">
-        <circle cx="502" cy="144" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="502" cy="144" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="502" y="128" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">PostgreSQL</text>
+        <circle cx="502" cy="144" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="502" cy="144" r="5" fill="#c98a12"/>
+        <text x="502" y="128" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">PostgreSQL</text>
       </g>
       <g class="v7">
-        <circle cx="569" cy="183" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="569" cy="183" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="569" y="205" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">GraphQL</text>
+        <circle cx="569" cy="183" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="569" cy="183" r="5" fill="#c98a12"/>
+        <text x="569" y="210" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">GraphQL</text>
       </g>
       <g class="v8">
-        <circle cx="636" cy="117" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="636" cy="117" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="636" y="101" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Docker</text>
+        <circle cx="636" cy="117" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="636" cy="117" r="5" fill="#c98a12"/>
+        <text x="636" y="101" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Docker</text>
       </g>
       <g class="v9">
-        <circle cx="703" cy="156" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="703" cy="156" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="703" y="178" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Kafka</text>
+        <circle cx="703" cy="156" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="703" cy="156" r="5" fill="#c98a12"/>
+        <text x="703" y="183" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Kafka</text>
       </g>
       <g class="v10">
-        <circle cx="771" cy="91" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="771" cy="91" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="771" y="75" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Redpanda</text>
+        <circle cx="771" cy="91" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="771" cy="91" r="5" fill="#c98a12"/>
+        <text x="771" y="75" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Redpanda</text>
       </g>
       <g class="v11">
-        <circle cx="838" cy="130" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="838" cy="130" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="838" y="152" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Ansible</text>
+        <circle cx="838" cy="130" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="838" cy="130" r="5" fill="#c98a12"/>
+        <text x="838" y="157" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Ansible</text>
       </g>
       <g class="v12">
-        <circle cx="905" cy="65" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="905" cy="65" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="905" y="49" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Kubernetes</text>
+        <circle cx="905" cy="65" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="905" cy="65" r="5" fill="#c98a12"/>
+        <text x="905" y="49" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Kubernetes</text>
       </g>
       <g class="v13">
-        <circle cx="973" cy="104" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="973" cy="104" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="973" y="126" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Proxmox</text>
+        <circle cx="973" cy="104" r="11" fill="#c98a12" fill-opacity="0.28"/>
+        <circle cx="973" cy="104" r="5" fill="#c98a12"/>
+        <text x="973" y="131" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Proxmox</text>
       </g>
       <g class="vspark">
-        <circle cx="1040" cy="65" r="7" fill="#c98a12" fill-opacity="0.12"/>
-        <use href="#sparkle" transform="translate(1040,65)"/>
-        <text x="1030" y="47" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Solidity</text>
+        <circle cx="1040" cy="65" r="13" fill="#c98a12" fill-opacity="0.28"/>
+        <use href="#sparkle" transform="translate(1040,65) scale(1.5)"/>
+        <text x="1030" y="45" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#34425c">Solidity</text>
       </g>
-      <text class="caption" x="543" y="285" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#1F2440" fill-opacity="0.75">star chart, not price chart</text>
     </g>
 
     <g transform="translate(0,160)">
     <!-- the moon surface -->
     <path d="M0,152 C120,144 220,158 340,150 C460,142 560,156 700,148 C840,140 960,154 1080,146 C1140,142 1180,146 1200,144 L1200,220 L0,220 Z" fill="url(#ground)"/>
+    <path d="M0,152 C120,144 220,158 340,150 C460,142 560,156 700,148 C840,140 960,154 1080,146 C1140,142 1180,146 1200,144" fill="none" stroke="#C4BFB3" stroke-opacity="1" stroke-width="2"/>
 
     <!-- craters -->
-    <g>
-      <ellipse cx="150" cy="172" rx="20" ry="6" fill="#6E7488" fill-opacity="0.55"/>
-      <path d="M132,170 Q150,163 168,170" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
-      <ellipse cx="405" cy="198" rx="26" ry="7" fill="#6E7488" fill-opacity="0.5"/>
-      <path d="M381,196 Q405,188 429,196" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
-      <ellipse cx="742" cy="176" rx="16" ry="5" fill="#6E7488" fill-opacity="0.5"/>
-      <path d="M727,174 Q742,168 757,174" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.4"/>
-      <ellipse cx="1130" cy="196" rx="22" ry="6" fill="#6E7488" fill-opacity="0.5"/>
-      <path d="M1110,194 Q1130,187 1150,194" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
+    <g fill="#6B6559" fill-opacity="0.2">
+      <ellipse cx="160" cy="180" rx="30" ry="5"/>
+      <ellipse cx="410" cy="198" rx="52" ry="8"/>
+      <ellipse cx="650" cy="176" rx="20" ry="3.5"/>
+      <ellipse cx="760" cy="204" rx="58" ry="9"/>
+      <ellipse cx="1100" cy="170" rx="24" ry="4"/>
     </g>
+
+    <text class="caption" x="1172" y="202" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="19" fill="#5C6474" fill-opacity="1">star chart, not price chart</text>
 
     <!-- a planted flag, quietly purple, hung from a crossbar as on the moon landings -->
     <g>

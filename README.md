@@ -1,6 +1,6 @@
 <div align="center">
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/banner-dark.svg"><img src="./assets/banner-light.svg" alt="A quiet moonscape: a small robot with a telescope watches a constellation shaped like a rising chart draw itself across the sky, with a star for each of Rust, Python, Go, TypeScript, SQL, PostgreSQL, GraphQL, Docker, Kafka, Redpanda, Ansible, Kubernetes, Proxmox and Solidity, and the caption reads: star chart, not price chart"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/banner-dark.svg"><img src="./assets/banner-light.svg" alt="A quiet moonscape: a small robot with a telescope watches a constellation shaped like a rising chart draw itself across the sky, with a star for each of Rust, Python, Go, TypeScript, SQL, PostgreSQL, GraphQL, Docker, Kafka, Redpanda, Ansible, Kubernetes, Proxmox and Solidity, and the caption reads: star chart, not price chart. After 20 seconds, little green aliens rise out of the moon, gather under the robot, crowd surf it off the left edge and throw it to the ringed planet"></picture>
 # Samuel Metcalfe
 
 **Software engineer: reliable distributed systems, payments infrastructure and blockchain protocols**

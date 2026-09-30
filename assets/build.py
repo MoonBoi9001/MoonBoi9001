@@ -13,6 +13,8 @@ import re
 from pathlib import Path
 
 OUT = Path(__file__).parent
+# the constellation's colours, shared by the banner and the project cards so the 2 always match
+CHART = {"dark": dict(star="#ffd772", line="#8ea6dc"), "light": dict(star="#c98a12", line="#6d80a6")}
 
 
 def label_offset(i, y, neighbours, n):
@@ -74,14 +76,16 @@ def constellation():
         dx, dy = label_offset(i, y, nb, n)
         label = f'<text x="{x+dx}" y="{y+dy}" text-anchor="middle" font-family="{FONT}" font-size="15" fill="#FFFFFF" fill-opacity="0.8">{t}</text>'
         if i == n - 1:
-            verts.append(f'      <g class="vspark">\n        <circle cx="{x}" cy="{y}" r="7" fill="#FFFFFF" fill-opacity="0.12"/>\n        <use href="#sparkle" transform="translate({x},{y})"/>\n        {label}\n      </g>')
+            verts.append(f'      <g class="vspark">\n        <circle cx="{x}" cy="{y}" r="7" fill="{CHART['dark']['star']}" fill-opacity="0.12"/>\n        <use href="#sparkle" transform="translate({x},{y})"/>\n        {label}\n      </g>')
         else:
             r, o = (2.2, 0.95) if i % 2 else (1.9, 0.85)
-            verts.append(f'      <g class="v{i+1}">\n        <circle cx="{x}" cy="{y}" r="5" fill="#FFFFFF" fill-opacity="0.1"/>\n        <circle cx="{x}" cy="{y}" r="{r}" fill="#FFFFFF" fill-opacity="{o}"/>\n        {label}\n      </g>')
+            verts.append(f'      <g class="v{i+1}">\n        <circle cx="{x}" cy="{y}" r="5" fill="{CHART['dark']['star']}" fill-opacity="0.1"/>\n        <circle cx="{x}" cy="{y}" r="{r}" fill="{CHART['dark']['star']}" fill-opacity="{o}"/>\n        {label}\n      </g>')
     a = s.index('      <polyline class="cline"')
     b = s.index('      <text class="caption"')
-    s = (s[:a] + f'      <polyline class="cline" points="{poly}"\n                fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>\n'
+    s = (s[:a] + f'      <polyline class="cline" points="{poly}"\n                fill="none" stroke="{CHART['dark']['line']}" stroke-opacity="0.55" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>\n'
          + "\n".join(verts) + "\n" + s[b:])
+    s, count = re.subn(r'(<g id="sparkle">\s*<path [^>]*? fill=")#\w+"', rf'\g<1>{CHART["dark"]["star"]}"', s)
+    assert count == 1, "sparkle for the brightest star not found"
     # point the telescope at the final star and run the sight line from its eyepiece to the star
     ex, ey = pts[-1][1], pts[-1][2]
     tx, ty = 958, 128 + 190                      # telescope pivot in banner coordinates
@@ -119,10 +123,13 @@ def light_banner():
                '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/>'
                '<stop offset="30%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>', s, flags=re.S)
     s = s.replace('stop-color="#C2C7D6"', 'stop-color="#D3D8E6"').replace('stop-color="#848BA1"', 'stop-color="#AEB5C8"')
-    # everything white in the sky (stars, constellation, caption, shooting star, flag pole) becomes navy
+    # everything white in the sky (stars, labels, caption, shooting star, flag pole) becomes navy, and the
+    # constellation's gold stars and blue-grey line take their light versions
     head, rest = s.split('<!-- background starfield -->', 1)
     sky, ground = rest.split('<!-- the moon surface -->', 1)
     sky = sky.replace('#FFFFFF', '#1F2440')
+    for part in ("star", "line"):
+        sky = sky.replace(CHART["dark"][part], CHART["light"][part])
     ground = ground.replace('stroke="#F2F4FA"', 'stroke="#1F2440"').replace('stroke="#E8EAF2"', 'stroke="#1F2440"')
     ground = ground.replace('stroke="#B7A6FF"', 'stroke="#3A22A6"').replace('fill="#0B0725"', 'fill="#4A3DB8"')
     ground = ground.replace('stroke="#FFD98A" stroke-opacity="0.25"', 'stroke="#3B4A8C" stroke-opacity="0.45"')
@@ -135,7 +142,7 @@ def light_banner():
                         '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93" stroke="#9A8CF0" stroke-width="1.2"/>')
     head = head.replace('stop-color="#FFFFFF"', 'stop-color="#1F2440"')
     # the sparkle and the bot's antenna stalk are shared definitions, so recolour them here too
-    head = head.replace('Z" fill="#FFFFFF" fill-opacity="0.95"/>', 'Z" fill="#1F2440" fill-opacity="0.95"/>')
+    head = head.replace(f'Z" fill="{CHART["dark"]["star"]}"', f'Z" fill="{CHART["light"]["star"]}"')
     head = head.replace('<line x1="0" y1="-26" x2="0" y2="-33" stroke="#FFFFFF" stroke-opacity="0.9"', '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#1F2440" stroke-opacity="0.9"')
     head = head.replace('A quiet moonscape at night', 'A quiet moonscape at dawn')
     sky = sky.replace('fill-opacity="0.65">star chart, not price chart', 'fill-opacity="0.75">star chart, not price chart')
@@ -162,10 +169,10 @@ WORK = [  # (organisation, [(repo, name, suffix, language, summary), ...]); card
 ]
 LANGUAGES = {"Rust": "#dea584", "Python": "#3572A5", "Go": "#00ADD8", "TypeScript": "#3178c6"}  # GitHub's colours
 CARD_THEMES = {
-    "light": dict(top="#eaf0fa", bottom="#fbfaf7", edge="#d1d9e0", ink="#1f2328", muted="#59636e", line="#6d80a6",
-                  star="#c98a12", strip="#f6f8fa", link="#0969da", rule="#d1d9e0"),
-    "dark": dict(top="#121b31", bottom="#0d1117", edge="#2e3a52", ink="#f0f6fc", muted="#9198a1", line="#8ea6dc",
-                 star="#ffd772", strip="#151b23", link="#4493f8", rule="#3d444d"),
+    "light": dict(top="#eaf0fa", bottom="#fbfaf7", edge="#d1d9e0", ink="#1f2328", muted="#59636e", line=CHART["light"]["line"],
+                  star=CHART["light"]["star"], strip="#f6f8fa", link="#0969da", rule="#d1d9e0"),
+    "dark": dict(top="#121b31", bottom="#0d1117", edge="#2e3a52", ink="#f0f6fc", muted="#9198a1", line=CHART["dark"]["line"],
+                 star=CHART["dark"]["star"], strip="#151b23", link="#4493f8", rule="#3d444d"),
 }
 SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
 MERGED = "/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged"

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="1200" height="380" role="img" aria-label="A quiet moonscape at dawn: a small robot with a telescope watches a constellation shaped like a rising chart draw itself across the sky with a star for each of Rust, Python, Go, TypeScript, SQL, PostgreSQL, GraphQL, Docker, Kafka, Redpanda, Ansible, Kubernetes, Proxmox and Solidity, a purple flag stands planted in the surface, and the caption reads star chart, not price chart">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/><stop offset="30%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>
     <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#D3D8E6"/>
       <stop offset="100%" stop-color="#AEB5C8"/>
@@ -10,8 +10,8 @@
       <stop offset="70%" stop-color="#2E6FDB"/>
       <stop offset="100%" stop-color="#1B4CA8"/>
     </radialGradient>
-    <clipPath id="frame"><rect width="1200" height="380"/></clipPath>
-    <clipPath id="earthclip"><circle cx="1108" cy="38" r="13"/></clipPath>
+    <clipPath id="frame"><rect width="1200" height="380" rx="14"/></clipPath>
+    <clipPath id="earthclip"><circle cx="100" cy="80" r="13"/></clipPath>
     <!-- a 4-point sparkle for the brightest star -->
     <g id="sparkle">
       <path d="M0,-6 L1.4,-1.4 L6,0 L1.4,1.4 L0,6 L-1.4,1.4 L-6,0 L-1.4,-1.4 Z" fill="#c98a12" fill-opacity="0.95"/>
@@ -98,13 +98,13 @@
     </style>
   </defs>
 
-  <rect width="1200" height="380" fill="url(#sky)"/>
+  <rect width="1200" height="380" rx="14" fill="url(#sky)"/>
   <g clip-path="url(#frame)">
 
     <!-- background starfield -->
     <g class="stars" fill="#1F2440">
       <circle cx="60" cy="34" r="1.2" fill-opacity="0.55"/>
-      <circle cx="118" cy="72" r="1" fill-opacity="0.4"/>
+      <circle cx="1108" cy="38" r="1" fill-opacity="0.4"/>
       <circle cx="205" cy="30" r="1.4" fill-opacity="0.6"/>
       <circle cx="282" cy="58" r="1" fill-opacity="0.35"/>
       <circle cx="352" cy="26" r="1.2" fill-opacity="0.5"/>
@@ -150,108 +150,108 @@
       <line x1="620" y1="8" x2="652" y2="17" stroke="#1F2440" stroke-opacity="0.9" stroke-width="1.6" stroke-linecap="round"/>
     </g>
 
-    <!-- earth, small and far away -->
+    <!-- earth, small and far away in the empty corner of the sky -->
     <g>
-      <circle cx="1108" cy="38" r="14.5" fill="#5B9BF0" fill-opacity="0.18"/>
-      <circle cx="1108" cy="38" r="13" fill="url(#earthball)"/>
+      <circle cx="100" cy="80" r="14.5" fill="#5B9BF0" fill-opacity="0.18"/>
+      <circle cx="100" cy="80" r="13" fill="url(#earthball)"/>
       <g clip-path="url(#earthclip)">
-        <path d="M1098,32 q5,-4 10,-1 q4,2 1,6 q-5,3 -9,0 q-4,-2 -2,-5 Z" fill="#3FA968" fill-opacity="0.9"/>
-        <path d="M1108,45 q6,-3 10,1 q2,3 -2,5 q-6,2 -9,-2 q-2,-2 1,-4 Z" fill="#3FA968" fill-opacity="0.85"/>
-        <circle cx="1114" cy="33" r="13" fill="#04050E" fill-opacity="0.3"/>
+        <path d="M90,74 q5,-4 10,-1 q4,2 1,6 q-5,3 -9,0 q-4,-2 -2,-5 Z" fill="#3FA968" fill-opacity="0.9"/>
+        <path d="M100,87 q6,-3 10,1 q2,3 -2,5 q-6,2 -9,-2 q-2,-2 1,-4 Z" fill="#3FA968" fill-opacity="0.85"/>
+        <circle cx="106" cy="75" r="13" fill="#04050E" fill-opacity="0.3"/>
       </g>
     </g>
 
     <!-- the constellation: a rising chart that draws itself in -->
     <g class="scene">
-      <polyline class="cline" points="165,276 232,211 300,250 367,185 434,224 502,159 569,198 636,132 703,171 771,106 838,145 905,80 973,119 1040,80"
+      <polyline class="cline" points="165,261 232,196 300,235 367,170 434,209 502,144 569,183 636,117 703,156 771,91 838,130 905,65 973,104 1040,65"
                 fill="none" stroke="#6d80a6" stroke-opacity="0.55" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
       <g class="v1">
-        <circle cx="165" cy="276" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="165" cy="276" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="165" y="298" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Rust</text>
+        <circle cx="165" cy="261" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="165" cy="261" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
+        <text x="165" y="283" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Rust</text>
       </g>
       <g class="v2">
-        <circle cx="232" cy="211" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="232" cy="211" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="232" y="195" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Python</text>
+        <circle cx="232" cy="196" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="232" cy="196" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
+        <text x="232" y="180" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Python</text>
       </g>
       <g class="v3">
-        <circle cx="300" cy="250" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="300" cy="250" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="300" y="272" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Go</text>
+        <circle cx="300" cy="235" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="300" cy="235" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
+        <text x="300" y="257" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Go</text>
       </g>
       <g class="v4">
-        <circle cx="367" cy="185" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="367" cy="185" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="367" y="169" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">TypeScript</text>
+        <circle cx="367" cy="170" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="367" cy="170" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
+        <text x="367" y="154" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">TypeScript</text>
       </g>
       <g class="v5">
-        <circle cx="434" cy="224" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="434" cy="224" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="434" y="246" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">SQL</text>
+        <circle cx="434" cy="209" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="434" cy="209" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
+        <text x="434" y="231" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">SQL</text>
       </g>
       <g class="v6">
-        <circle cx="502" cy="159" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="502" cy="159" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="502" y="143" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">PostgreSQL</text>
+        <circle cx="502" cy="144" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="502" cy="144" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
+        <text x="502" y="128" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">PostgreSQL</text>
       </g>
       <g class="v7">
-        <circle cx="569" cy="198" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="569" cy="198" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="569" y="220" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">GraphQL</text>
+        <circle cx="569" cy="183" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="569" cy="183" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
+        <text x="569" y="205" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">GraphQL</text>
       </g>
       <g class="v8">
-        <circle cx="636" cy="132" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="636" cy="132" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="636" y="116" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Docker</text>
+        <circle cx="636" cy="117" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="636" cy="117" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
+        <text x="636" y="101" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Docker</text>
       </g>
       <g class="v9">
-        <circle cx="703" cy="171" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="703" cy="171" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="703" y="193" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Kafka</text>
+        <circle cx="703" cy="156" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="703" cy="156" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
+        <text x="703" y="178" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Kafka</text>
       </g>
       <g class="v10">
-        <circle cx="771" cy="106" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="771" cy="106" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="771" y="90" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Redpanda</text>
+        <circle cx="771" cy="91" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="771" cy="91" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
+        <text x="771" y="75" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Redpanda</text>
       </g>
       <g class="v11">
-        <circle cx="838" cy="145" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="838" cy="145" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="838" y="167" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Ansible</text>
+        <circle cx="838" cy="130" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="838" cy="130" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
+        <text x="838" y="152" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Ansible</text>
       </g>
       <g class="v12">
-        <circle cx="905" cy="80" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="905" cy="80" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
-        <text x="905" y="64" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Kubernetes</text>
+        <circle cx="905" cy="65" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="905" cy="65" r="2.2" fill="#c98a12" fill-opacity="0.95"/>
+        <text x="905" y="49" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Kubernetes</text>
       </g>
       <g class="v13">
-        <circle cx="973" cy="119" r="5" fill="#c98a12" fill-opacity="0.1"/>
-        <circle cx="973" cy="119" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
-        <text x="973" y="141" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Proxmox</text>
+        <circle cx="973" cy="104" r="5" fill="#c98a12" fill-opacity="0.1"/>
+        <circle cx="973" cy="104" r="1.9" fill="#c98a12" fill-opacity="0.85"/>
+        <text x="973" y="126" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Proxmox</text>
       </g>
       <g class="vspark">
-        <circle cx="1040" cy="80" r="7" fill="#c98a12" fill-opacity="0.12"/>
-        <use href="#sparkle" transform="translate(1040,80)"/>
-        <text x="1030" y="62" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Solidity</text>
+        <circle cx="1040" cy="65" r="7" fill="#c98a12" fill-opacity="0.12"/>
+        <use href="#sparkle" transform="translate(1040,65)"/>
+        <text x="1030" y="47" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#1F2440" fill-opacity="0.8">Solidity</text>
       </g>
-      <text class="caption" x="543" y="300" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#1F2440" fill-opacity="0.75">star chart, not price chart</text>
+      <text class="caption" x="543" y="285" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#1F2440" fill-opacity="0.75">star chart, not price chart</text>
     </g>
 
-    <g transform="translate(0,190)">
+    <g transform="translate(0,160)">
     <!-- the moon surface -->
-    <path d="M0,152 C120,144 220,158 340,150 C460,142 560,156 700,148 C840,140 960,154 1080,146 C1140,142 1180,146 1200,144 L1200,190 L0,190 Z" fill="url(#ground)"/>
+    <path d="M0,152 C120,144 220,158 340,150 C460,142 560,156 700,148 C840,140 960,154 1080,146 C1140,142 1180,146 1200,144 L1200,220 L0,220 Z" fill="url(#ground)"/>
 
     <!-- craters -->
     <g>
       <ellipse cx="150" cy="172" rx="20" ry="6" fill="#6E7488" fill-opacity="0.55"/>
       <path d="M132,170 Q150,163 168,170" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
-      <ellipse cx="405" cy="180" rx="26" ry="7" fill="#6E7488" fill-opacity="0.5"/>
-      <path d="M381,178 Q405,170 429,178" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
+      <ellipse cx="405" cy="198" rx="26" ry="7" fill="#6E7488" fill-opacity="0.5"/>
+      <path d="M381,196 Q405,188 429,196" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
       <ellipse cx="742" cy="176" rx="16" ry="5" fill="#6E7488" fill-opacity="0.5"/>
       <path d="M727,174 Q742,168 757,174" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.4"/>
-      <ellipse cx="1130" cy="180" rx="22" ry="6" fill="#6E7488" fill-opacity="0.5"/>
-      <path d="M1110,178 Q1130,171 1150,178" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
+      <ellipse cx="1130" cy="196" rx="22" ry="6" fill="#6E7488" fill-opacity="0.5"/>
+      <path d="M1110,194 Q1130,187 1150,194" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
     </g>
 
     <!-- a planted flag, quietly purple -->
@@ -267,13 +267,13 @@
         <line x1="-6" y1="18" x2="-14" y2="34" stroke="#1F2440" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="6" y1="18" x2="14" y2="34" stroke="#1F2440" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="0" y1="18" x2="0" y2="36" stroke="#1F2440" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
-        <g transform="rotate(19)">
+        <g transform="rotate(20)">
           <rect x="-6" y="14" width="11" height="9" rx="2.5" fill="#4A3DB8" stroke="#3A22A6" stroke-opacity="0.55" stroke-width="1.2"/>
           <rect x="-5" y="-14" width="9" height="30" rx="4" fill="#4A3DB8" stroke="#3A22A6" stroke-opacity="0.55" stroke-width="1.4"/>
           <rect x="-6.5" y="-17" width="12" height="5" rx="2.4" fill="#4A3DB8" stroke="#3A22A6" stroke-opacity="0.55" stroke-width="1.4"/>
         </g>
       </g>
-      <line class="sight" x1="953" y1="113" x2="1040" y2="-102" stroke="#3B4A8C" stroke-opacity="0.45" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+      <line class="sight" x1="952" y1="113" x2="1040" y2="-87" stroke="#3B4A8C" stroke-opacity="0.45" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round"/>
       <g transform="translate(1006,132) scale(0.95)">
         <line x1="-13" y1="-8" x2="-24" y2="-18" stroke="#9A8CF0" stroke-opacity="0.95" stroke-width="3.4" stroke-linecap="round"/>
         <circle cx="-25" cy="-20" r="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#9A8CF0" stroke-width="1"/>

@@ -39,7 +39,7 @@ def constellation():
     p = OUT / "banner-dark.svg"
     s = p.read_text()
     n = len(STARS)
-    x0, x1, y0, y1, amp = 165, 1040, 250, 80, 26
+    x0, x1, y0, y1, amp = 165, 1040, 235, 65, 26
     pts = []
     for i, name in enumerate(STARS):
         f = i / (n - 1)
@@ -88,12 +88,13 @@ def constellation():
     assert count == 1, "sparkle for the brightest star not found"
     # point the telescope at the final star and run the sight line from its eyepiece to the star
     ex, ey = pts[-1][1], pts[-1][2]
-    tx, ty = 958, 128 + 190                      # telescope pivot in banner coordinates
+    ground = int(re.search(r'<g transform="translate\(0,(\d+)\)">\s*<!-- the moon surface -->', s).group(1))
+    tx, ty = 958, 128 + ground                   # telescope pivot in banner coordinates; the moon's layer sits lower
     angle = math.degrees(math.atan2(ex - tx, ty - ey))   # 0 is straight up, positive leans right
     s = re.sub(r'<g transform="rotate\(-?[\d.]+\)">', f'<g transform="rotate({angle:.0f})">', s)
     sx = round(tx - 16 * math.sin(math.radians(angle)))
-    sy = round(ty - 16 * math.cos(math.radians(angle))) - 190
-    s = re.sub(r'<line class="sight" x1="-?\d+" y1="-?\d+" x2="-?\d+" y2="-?\d+"', f'<line class="sight" x1="{sx}" y1="{sy}" x2="{ex}" y2="{ey - 190 + 8}"', s)
+    sy = round(ty - 16 * math.cos(math.radians(angle))) - ground
+    s = re.sub(r'<line class="sight" x1="-?\d+" y1="-?\d+" x2="-?\d+" y2="-?\d+"', f'<line class="sight" x1="{sx}" y1="{sy}" x2="{ex}" y2="{ey - ground + 8}"', s)
     # background stars must not sit inside a label; drop any that do (labels are 15px mono, ~9px per glyph)
     boxes = []
     for i, (t, x, y) in enumerate(pts):
@@ -118,10 +119,10 @@ def constellation():
 def light_banner():
     """Recolour the hand-drawn dark banner into a dawn edition: pale sky, navy stars and lines."""
     s = (OUT / "banner-dark.svg").read_text()
-    # sky: fade from the white page into a pale blue dawn
+    # sky: a pale blue dawn, deepening towards the horizon
     s = re.sub(r'(<linearGradient id="sky".*?</linearGradient>)',
-               '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/>'
-               '<stop offset="30%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>', s, flags=re.S)
+               '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">'
+               '<stop offset="0%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>', s, flags=re.S)
     s = s.replace('stop-color="#C2C7D6"', 'stop-color="#D3D8E6"').replace('stop-color="#848BA1"', 'stop-color="#AEB5C8"')
     # everything white in the sky (stars, labels, caption, shooting star, flag pole) becomes navy, and the
     # constellation's gold stars and blue-grey line take their light versions

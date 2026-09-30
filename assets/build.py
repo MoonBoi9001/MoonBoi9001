@@ -5,31 +5,11 @@ Run from the repo root: python3 assets/build.py. It rewrites the constellation i
 banner-dark.svg from the STARS list (edit that list to add or remove a skill), keeps the alt text in
 the SVG and README in step, and derives banner-light.svg from the dark one by recolouring it.
 """
-import random
 import re
 from pathlib import Path
 
 OUT = Path(__file__).parent
-W = 1200
-MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
 
-THEMES = {
-    "dark": dict(edge="#0d1117", sky="#0F1136", ink="#FFFFFF", star="#FFFFFF"),
-    "light": dict(edge="#ffffff", sky="#D9E0F7", ink="#1F2440", star="#3B4A8C"),
-}
-
-
-def stars(T, seed, h, n, avoid):
-    rng = random.Random(seed)
-    out = []
-    while len(out) < n:
-        x, y = rng.randint(12, W - 12), rng.randint(12, h - 12)
-        if avoid(x, y):
-            continue
-        r = rng.choice([1, 1, 1.2, 1.4])
-        o = rng.choice([0.35, 0.4, 0.5, 0.6])
-        out.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill-opacity="{o}"/>')
-    return f'<g class="stars" fill="{T["star"]}">' + "".join(out) + "</g>"
 
 def label_offset(i, y, neighbours, n):
     """Where a star's label sits: above peaks, below dips, so it never crosses the lines either side."""
@@ -37,59 +17,6 @@ def label_offset(i, y, neighbours, n):
         return -10, -18            # the brightest star is a peak, so its label sits above it too
     above = y <= sum(neighbours) / len(neighbours)
     return (0, -16) if above else (0, 22)
-
-
-def constellation(theme):
-    """The stack as labelled stars joined into 1 constellation that draws itself in."""
-    T = THEMES[theme]
-    h = 190
-    pts = [("Rust", 120, 130), ("Python", 270, 70), ("TypeScript", 410, 140), ("PostgreSQL", 560, 50),
-           ("Kafka", 700, 120), ("Redpanda", 820, 40), ("Kubernetes", 960, 130), ("Ethereum", 1100, 62)]
-    poly = " ".join(f"{x},{y}" for _, x, y in pts)
-    nodes = ""
-    for i, (t, x, y) in enumerate(pts):
-        dy = 34 if y < 90 else -22
-        nodes += f'''
-  <g class="fade d{i+1}">
-    <circle cx="{x}" cy="{y}" r="9" fill="{T['ink']}" fill-opacity="0.1"/>
-    <circle cx="{x}" cy="{y}" r="3" fill="{T['ink']}" fill-opacity="0.95"/>
-    <text x="{x}" y="{y+dy}" text-anchor="middle" font-family="{MONO}" font-size="15" fill="{T['ink']}" fill-opacity="0.85">{t}</text>
-  </g>'''
-    avoid = lambda x, y: any(abs(x - px) < 60 and abs(y - py) < 50 for _, px, py in pts)
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {h}" width="{W}" height="{h}" role="img" aria-label="The stack drawn as a constellation: Rust, Python, TypeScript, PostgreSQL, Kafka, Redpanda, Kubernetes and Ethereum">
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="{T['edge']}"/>
-      <stop offset="26%" stop-color="{T['sky']}"/>
-      <stop offset="74%" stop-color="{T['sky']}"/>
-      <stop offset="100%" stop-color="{T['edge']}"/>
-    </linearGradient>
-    <style>
-      .stars circle {{ animation: twinkle 4.2s ease-in-out infinite alternate; }}
-      .stars circle:nth-of-type(2n) {{ animation-duration: 5.4s; animation-delay: 1.1s; }}
-      .stars circle:nth-of-type(3n) {{ animation-duration: 6.2s; animation-delay: 2.3s; }}
-      .stars circle:nth-of-type(5n) {{ animation-duration: 7s; animation-delay: 0.6s; }}
-      @keyframes twinkle {{ from {{ opacity: 1; }} to {{ opacity: 0.3; }} }}
-      .draw {{ stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: draw 3s ease-out forwards; }}
-      @keyframes draw {{ to {{ stroke-dashoffset: 0; }} }}
-      .fade {{ opacity: 0; animation: fade 1.2s ease-out forwards; }}
-      @keyframes fade {{ to {{ opacity: 1; }} }}
-      .d1 {{ animation-delay: 0.4s; }} .d2 {{ animation-delay: 0.9s; }} .d3 {{ animation-delay: 1.4s; }}
-      .d4 {{ animation-delay: 1.9s; }} .d5 {{ animation-delay: 2.4s; }} .d6 {{ animation-delay: 2.9s; }}
-      .d7 {{ animation-delay: 3.4s; }} .d8 {{ animation-delay: 3.9s; }}
-      @media (prefers-reduced-motion: reduce) {{
-        * {{ animation: none !important; }}
-        .draw {{ stroke-dashoffset: 0; }} .fade {{ opacity: 1; }}
-      }}
-    </style>
-  </defs>
-  <rect width="{W}" height="{h}" fill="url(#sky)"/>
-  {stars(T, 7, h, 40, avoid)}
-  <polyline class="draw" points="{poly}" fill="none" stroke="{T['ink']}" stroke-opacity="0.3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>{nodes}
-</svg>
-'''
-    (OUT / f"stack-{theme}.svg").write_text(svg)
-    print(f"wrote stack-{theme}.svg", f"{len(svg)//1024} KB")
 
 
 STARS = ["Rust", "Python", "Go", "TypeScript", "SQL", "PostgreSQL", "GraphQL", "Docker", "Kafka",
@@ -169,7 +96,8 @@ def constellation():
     def keep(m):
         cx, cy = float(m.group(1)), float(m.group(2))
         return "" if any(x0 <= cx <= x1 and y0 <= cy <= y1 for x0, y0, x1, y1 in boxes) else m.group(0)
-    a = s.index('<g class="stars"'); b = s.index('</g>', a)
+    a = s.index('<g class="stars"')
+    b = s.index('</g>', a)
     stars_block = re.sub(r'\s*<circle cx="([\d.]+)" cy="([\d.]+)" r="[\d.]+" fill-opacity="[\d.]+"/>', keep, s[a:b])
     s = s[:a] + stars_block + s[b:]
     listed = ", ".join(STARS[:-1]) + " and " + STARS[-1]

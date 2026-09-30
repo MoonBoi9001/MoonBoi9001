@@ -254,11 +254,12 @@
       <path d="M1110,194 Q1130,187 1150,194" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
     </g>
 
-    <!-- a planted flag, quietly purple -->
+    <!-- a planted flag, quietly purple, hung from a crossbar as on the moon landings -->
     <g>
-      <line x1="92" y1="150" x2="92" y2="116" stroke="#1F2440" stroke-width="2.4" stroke-linecap="round"/>
-      <path d="M93,117 L124,122 L93,129 Z" fill="#6747ED" fill-opacity="0.95"/>
-      <ellipse cx="92" cy="151" rx="7" ry="2.2" fill="#5A6076" fill-opacity="0.6"/>
+      <line x1="92" y1="152" x2="92" y2="108" stroke="#1F2440" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="92" y1="110" x2="124" y2="110" stroke="#1F2440" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M93,111 L123,111 L123,128 Q116,126 108,129 Q100,131 93,129 Z" fill="#6747ED" fill-opacity="0.95"/>
+      <path d="M108,111 Q106,120 108,129" fill="none" stroke="#2A1A8C" stroke-opacity="0.35" stroke-width="1.2"/>
     </g>
 
     <!-- the bot peering through its telescope at the last star -->

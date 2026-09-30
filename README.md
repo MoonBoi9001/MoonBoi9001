@@ -41,7 +41,7 @@ The service that indexers run to receive, verify and answer indexing agreement p
 
 ### [subgraph-dips-indexer-selection (IISA)](https://github.com/edgeandnode/subgraph-dips-indexer-selection) (Python)
 
-This service uses a selection algorithm to pick the best indexers to serve paid paid indexing agreements on each subgraph, minimising gateway cost and latency while maximising decentralisation, success rate and uptime.
+This service uses a selection algorithm to pick the best indexers to serve paid indexing agreements on each subgraph, minimising gateway cost and latency while maximising decentralisation, success rate and uptime.
 
 [See my merged changes](https://github.com/edgeandnode/subgraph-dips-indexer-selection/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged)
 

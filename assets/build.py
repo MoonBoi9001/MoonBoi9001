@@ -144,4 +144,6 @@ def light_banner():
 listed = constellation()
 light_banner()
 readme = OUT.parent / "README.md"
-readme.write_text(re.sub(r"1 star for each of .*? and \w+", f"1 star for each of {listed}", readme.read_text()))
+text, count = re.subn(r"a star for each of .*? and \w+", f"a star for each of {listed}", readme.read_text())
+assert count == 1, "banner alt text not found in README.md"
+readme.write_text(text)

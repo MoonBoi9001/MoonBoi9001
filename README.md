@@ -33,6 +33,14 @@ I'm a software engineer who has specialised in backend infrastructure for blockc
 <a href="https://github.com/edgeandnode/subgraph-dips-indexer-selection/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/cards/merged-dark.svg"><img src="./assets/cards/merged-light.svg" width="49%" alt="See my merged changes to subgraph-dips-indexer-selection"></picture></a>
 <a href="https://github.com/graphprotocol/rewards-eligibility-oracle/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/cards/merged-dark.svg"><img src="./assets/cards/merged-light.svg" width="49%" alt="See my merged changes to rewards-eligibility-oracle"></picture></a>
 </p>
+
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/cards/portfolio-dark.svg"><img src="./assets/cards/portfolio-light.svg" width="100%" alt="Portfolio"></picture></p>
+
+<p align="center">
+<a href="https://moonboi9001.github.io/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/cards/site-dark.svg"><img src="./assets/cards/site-light.svg" width="98.5%" alt="moonboi9001.github.io, my portfolio: The story behind the work above, with numbers from production, plus my smart contract security and cross-chain GRT work. Outside work: an at-home LLM GPU workstation, a stock options data pipeline and my own Graph indexer and archive nodes."></picture></a>
+<br>
+<a href="https://moonboi9001.github.io/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/cards/visit-dark.svg"><img src="./assets/cards/visit-light.svg" width="98.5%" alt="Visit my portfolio"></picture></a>
+</p>
 <!-- end of selected work -->
 
 ---

@@ -86,10 +86,12 @@ def constellation():
          + "\n".join(verts) + "\n" + s[b:])
     s, count = re.subn(r'(<g id="sparkle">\s*<path [^>]*? fill=")#\w+"', rf'\g<1>{CHART["dark"]["star"]}"', s)
     assert count == 1, "sparkle for the brightest star not found"
-    # point the telescope at the final star and run the sight line from its eyepiece to the star
+    # point the telescope at the final star and run the sight line from its far end to the star
     ex, ey = pts[-1][1], pts[-1][2]
     ground = int(re.search(r'<g transform="translate\(0,(\d+)\)">\s*<!-- the moon surface -->', s).group(1))
-    tx, ty = 958, 128 + ground                   # telescope pivot in banner coordinates; the moon's layer sits lower
+    tx, ty = map(int, re.search(r'<!-- the bot peering through its telescope.*?<g transform="translate\((\d+),(\d+)\)">',
+                                s, re.S).groups())
+    ty += ground                                 # the telescope's pivot, in banner rather than moon coordinates
     angle = math.degrees(math.atan2(ex - tx, ty - ey))   # 0 is straight up, positive leans right
     s = re.sub(r'<g transform="rotate\(-?[\d.]+\)">', f'<g transform="rotate({angle:.0f})">', s)
     sx = round(tx - 16 * math.sin(math.radians(angle)))
@@ -116,6 +118,12 @@ def constellation():
     return listed
 
 
+def swap(text, old, new):
+    """Replace old with new, stopping the build if the hand-drawn banner no longer contains old."""
+    assert old in text, f"banner-dark.svg no longer contains: {old[:70]}"
+    return text.replace(old, new)
+
+
 def light_banner():
     """Recolour the hand-drawn dark banner into a dawn edition: pale sky, navy stars and lines."""
     s = (OUT / "banner-dark.svg").read_text()
@@ -123,30 +131,30 @@ def light_banner():
     s = re.sub(r'(<linearGradient id="sky".*?</linearGradient>)',
                '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">'
                '<stop offset="0%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>', s, flags=re.S)
-    s = s.replace('stop-color="#C2C7D6"', 'stop-color="#D3D8E6"').replace('stop-color="#848BA1"', 'stop-color="#AEB5C8"')
+    s = swap(s, 'stop-color="#C2C7D6"', 'stop-color="#D3D8E6"')
+    s = swap(s, 'stop-color="#848BA1"', 'stop-color="#AEB5C8"')
     # everything white in the sky (stars, labels, caption, shooting star, flag pole) becomes navy, and the
     # constellation's gold stars and blue-grey line take their light versions
     head, rest = s.split('<!-- background starfield -->', 1)
     sky, ground = rest.split('<!-- the moon surface -->', 1)
-    sky = sky.replace('#FFFFFF', '#1F2440')
+    sky = swap(sky, '#FFFFFF', '#1F2440')
     for part in ("star", "line"):
-        sky = sky.replace(CHART["dark"][part], CHART["light"][part])
-    ground = ground.replace('stroke="#F2F4FA"', 'stroke="#1F2440"').replace('stroke="#E8EAF2"', 'stroke="#1F2440"')
-    ground = ground.replace('stroke="#B7A6FF"', 'stroke="#3A22A6"').replace('fill="#0B0725"', 'fill="#4A3DB8"')
-    ground = ground.replace('stroke="#FFD98A" stroke-opacity="0.25"', 'stroke="#3B4A8C" stroke-opacity="0.45"')
+        sky = swap(sky, CHART["dark"][part], CHART["light"][part])
+    ground = swap(ground, 'stroke="#F2F4FA"', 'stroke="#1F2440"')
+    ground = swap(ground, 'stroke="#E8EAF2"', 'stroke="#1F2440"')
+    ground = swap(ground, 'stroke="#B7A6FF"', 'stroke="#3A22A6"')
+    ground = swap(ground, 'fill="#0B0725"', 'fill="#4A3DB8"')
+    ground = swap(ground, 'stroke="#FFD98A" stroke-opacity="0.25"', 'stroke="#3B4A8C" stroke-opacity="0.45"')
     # the bot stays white but gets an outline so it reads against the pale sky
-    ground = ground.replace('<line x1="-13" y1="-8" x2="-24" y2="-18" stroke="#FFFFFF" stroke-opacity="0.93"', '<line x1="-13" y1="-8" x2="-24" y2="-18" stroke="#9A8CF0" stroke-opacity="0.95"')
-    ground = ground.replace('<circle cx="-25" cy="-20" r="3" fill="#FFFFFF" fill-opacity="0.95"/>', '<circle cx="-25" cy="-20" r="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#9A8CF0" stroke-width="1"/>')
-    ground = ground.replace('<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93"/>',
-                            '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93" stroke="#9A8CF0" stroke-width="1.2"/>')
-    head = head.replace('<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93"/>',
-                        '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93" stroke="#9A8CF0" stroke-width="1.2"/>')
-    head = head.replace('stop-color="#FFFFFF"', 'stop-color="#1F2440"')
+    ground = swap(ground, '<line x1="13" y1="-4" x2="19" y2="-11" stroke="#FFFFFF" stroke-opacity="0.93"', '<line x1="13" y1="-4" x2="19" y2="-11" stroke="#9A8CF0" stroke-opacity="0.95"')
+    ground = swap(ground, '<circle cx="20" cy="-13" r="3" fill="#FFFFFF" fill-opacity="0.95"/>', '<circle cx="20" cy="-13" r="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#9A8CF0" stroke-width="1"/>')
+    head = swap(head, '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93"/>',
+                '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93" stroke="#9A8CF0" stroke-width="1.2"/>')
     # the sparkle and the bot's antenna stalk are shared definitions, so recolour them here too
-    head = head.replace(f'Z" fill="{CHART["dark"]["star"]}"', f'Z" fill="{CHART["light"]["star"]}"')
-    head = head.replace('<line x1="0" y1="-26" x2="0" y2="-33" stroke="#FFFFFF" stroke-opacity="0.9"', '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#1F2440" stroke-opacity="0.9"')
-    head = head.replace('A quiet moonscape at night', 'A quiet moonscape at dawn')
-    sky = sky.replace('fill-opacity="0.65">star chart, not price chart', 'fill-opacity="0.75">star chart, not price chart')
+    head = swap(head, f'Z" fill="{CHART["dark"]["star"]}"', f'Z" fill="{CHART["light"]["star"]}"')
+    head = swap(head, '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#FFFFFF" stroke-opacity="0.9"', '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#1F2440" stroke-opacity="0.9"')
+    head = swap(head, 'A quiet moonscape at night', 'A quiet moonscape at dawn')
+    sky = swap(sky, 'fill-opacity="0.65">star chart, not price chart', 'fill-opacity="0.75">star chart, not price chart')
     out = head + '<!-- background starfield -->' + sky + '<!-- the moon surface -->' + ground
     (OUT / "banner-light.svg").write_text(out)
     print("wrote banner-light.svg", f"{len(out)//1024} KB")

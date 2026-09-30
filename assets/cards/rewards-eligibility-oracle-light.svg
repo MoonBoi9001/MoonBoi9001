@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 189" width="440" height="189" role="img" aria-label="rewards-eligibility-oracle, Python: This oracle decides which indexers qualify for The Graph&#x27;s indexing rewards, using a binary eligibility algorithm and records the decision into the RewardsEligibilityOracle contract on Arbitrum." font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 189" width="440" height="189" role="img" aria-label="rewards-eligibility-oracle, Python: This oracle decides which indexers qualify for indexing rewards, using a binary eligibility algorithm and records the decision into the RewardsEligibilityOracle contract on Arbitrum." font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#eaf0fa"/><stop offset="1" stop-color="#fbfaf7"/>
@@ -10,5 +10,5 @@
   <circle cx="29" cy="34" r="5" fill="#3572A5"/>
   <text x="41" y="38.5" font-size="13" fill="#59636e">Python</text>
   <text x="24" y="74" font-size="18" font-weight="700" fill="#1f2328">rewards-eligibility-oracle</text>
-  <text font-size="14.5" fill="#1f2328" fill-opacity="0.88"><tspan x="24" y="104">This oracle decides which indexers qualify for The</tspan><tspan x="24" y="125">Graph&#x27;s indexing rewards, using a binary eligibility</tspan><tspan x="24" y="146">algorithm and records the decision into the</tspan><tspan x="24" y="167">RewardsEligibilityOracle contract on Arbitrum.</tspan></text>
+  <text font-size="14.5" fill="#1f2328" fill-opacity="0.88"><tspan x="24" y="104">This oracle decides which indexers qualify for indexing</tspan><tspan x="24" y="125">rewards, using a binary eligibility algorithm and records</tspan><tspan x="24" y="146">the decision into the RewardsEligibilityOracle contract</tspan><tspan x="24" y="167">on Arbitrum.</tspan></text>
 </svg>

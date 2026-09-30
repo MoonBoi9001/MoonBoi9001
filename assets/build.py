@@ -182,11 +182,11 @@ WORK = [  # (organisation, [(repo, name, suffix, language, summary), ...]); card
         ("graphprotocol/indexer-rs", "indexer-rs", "", "Rust",
          "The service that indexers run to receive, verify and answer indexing agreement proposals."),
         ("edgeandnode/subgraph-dips-indexer-selection", "subgraph-dips-indexer-selection", "(IISA)", "Python",
-         "This service uses a selection algorithm to pick the best indexers to serve paid indexing agreements "
-         "on each subgraph, minimising gateway cost and latency while maximising decentralisation, success "
+         "This service uses a selection algorithm to pick indexers to serve paid indexing agreements, "
+         "minimising gateway cost and latency while maximising decentralisation, success "
          "rate and uptime."),
         ("graphprotocol/rewards-eligibility-oracle", "rewards-eligibility-oracle", "", "Python",
-         "This oracle decides which indexers qualify for The Graph's indexing rewards, using a binary "
+         "This oracle decides which indexers qualify for indexing rewards, using a binary "
          "eligibility algorithm and records the decision into the RewardsEligibilityOracle contract on Arbitrum."),
     ]),
 ]

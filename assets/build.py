@@ -15,14 +15,16 @@ from pathlib import Path
 OUT = Path(__file__).parent
 # the constellation's colours, shared by the banner and the project cards so the 2 always match
 CHART = {"dark": dict(star="#ffd772", line="#8ea6dc"), "light": dict(star="#c98a12", line="#6d80a6")}
+LABELS = {"dark": "#c8d3ec", "light": "#34425c"}     # the banner's skill names
+SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
 
 
 def label_offset(i, y, neighbours, n):
     """Where a star's label sits: above peaks, below dips, so it never crosses the lines either side."""
     if i == n - 1:
-        return -10, -18            # the brightest star is a peak, so its label sits above it too
+        return -10, -20            # the brightest star is a peak, so its label sits above it too
     above = y <= sum(neighbours) / len(neighbours)
-    return (0, -16) if above else (0, 22)
+    return (0, -16) if above else (0, 27)
 
 
 STARS = ["Rust", "Python", "Go", "TypeScript", "SQL", "PostgreSQL", "GraphQL", "Docker", "Kafka",
@@ -39,7 +41,7 @@ def constellation():
     p = OUT / "banner-dark.svg"
     s = p.read_text()
     n = len(STARS)
-    x0, x1, y0, y1, amp = 165, 1040, 250, 80, 26
+    x0, x1, y0, y1, amp = 165, 1110, 240, 55, 26
     pts = []
     for i, name in enumerate(STARS):
         f = i / (n - 1)
@@ -61,6 +63,11 @@ def constellation():
     for i in range(n):
         start = 4.5 + 27.5 * cum[i] / L
         css.append(f"      @keyframes ignite{i+1} {{ 0%, {start:.1f}% {{ opacity: 0; }} {start+1.5:.1f}% {{ opacity: 1; }} 100% {{ opacity: 1; }} }}")
+    # the telescope's sight line appears only once the last star is fully lit
+    lit = start + 1.5
+    s, count = re.subn(r'@keyframes sightIn \{ 0%, [\d.]+% \{ opacity: 0; \} [\d.]+% \{',
+                       f'@keyframes sightIn {{ 0%, {lit:.1f}% {{ opacity: 0; }} {lit + 2.5:.1f}% {{', s)
+    assert count == 1, "sight line timing not found"
     s = re.sub(r'      \.v1 \{ animation: ignite1.*?@keyframes ignite\d+ \{[^\n]*\n(?=      @keyframes captionIn)', "\n".join(css) + "\n", s, flags=re.S)
     s, count = re.subn(r'\.cline, (\.v\d+, )+\.vspark, \.caption,', '.cline, ' + ", ".join(names) + ', .caption,', s)
     assert count == 1, 'reduced-motion selector not found'
@@ -68,32 +75,35 @@ def constellation():
     s = re.sub(r'(0%|4\.5%)(\s+)\{ stroke-dashoffset: \d+; \}', rf'\1\2{{ stroke-dashoffset: {dash}; }}', s)
     s = re.sub(r'(32%|100%)(\s+)\{ stroke-dashoffset: \d+; \}', r'\1\2{ stroke-dashoffset: 0; }', s)
     # vertices
-    FONT = 'ui-monospace, SFMono-Regular, Menlo, monospace'
     poly = " ".join(f"{x},{y}" for _, x, y in pts)
     verts = []
     for i, (t, x, y) in enumerate(pts):
         nb = [pts[j][2] for j in (i - 1, i + 1) if 0 <= j < n]
         dx, dy = label_offset(i, y, nb, n)
-        label = f'<text x="{x+dx}" y="{y+dy}" text-anchor="middle" font-family="{FONT}" font-size="15" fill="#FFFFFF" fill-opacity="0.8">{t}</text>'
+        label = (f'<text x="{x+dx}" y="{y+dy}" text-anchor="middle" font-family="{SANS}" font-size="15" '
+                 f'font-weight="600" fill="{LABELS["dark"]}">{t}</text>')
+        star = CHART["dark"]["star"]
         if i == n - 1:
-            verts.append(f'      <g class="vspark">\n        <circle cx="{x}" cy="{y}" r="7" fill="{CHART['dark']['star']}" fill-opacity="0.12"/>\n        <use href="#sparkle" transform="translate({x},{y})"/>\n        {label}\n      </g>')
+            verts.append(f'      <g class="vspark">\n        <circle cx="{x}" cy="{y}" r="13" fill="{star}" fill-opacity="0.28"/>\n        <use href="#sparkle" transform="translate({x},{y}) scale(1.5)"/>\n        {label}\n      </g>')
         else:
-            r, o = (2.2, 0.95) if i % 2 else (1.9, 0.85)
-            verts.append(f'      <g class="v{i+1}">\n        <circle cx="{x}" cy="{y}" r="5" fill="{CHART['dark']['star']}" fill-opacity="0.1"/>\n        <circle cx="{x}" cy="{y}" r="{r}" fill="{CHART['dark']['star']}" fill-opacity="{o}"/>\n        {label}\n      </g>')
+            verts.append(f'      <g class="v{i+1}">\n        <circle cx="{x}" cy="{y}" r="11" fill="{star}" fill-opacity="0.28"/>\n        <circle cx="{x}" cy="{y}" r="5" fill="{star}"/>\n        {label}\n      </g>')
     a = s.index('      <polyline class="cline"')
-    b = s.index('      <text class="caption"')
-    s = (s[:a] + f'      <polyline class="cline" points="{poly}"\n                fill="none" stroke="{CHART['dark']['line']}" stroke-opacity="0.55" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>\n'
+    b = s.index('\n    </g>', a) + 1         # the end of the constellation's group
+    s = (s[:a] + f'      <polyline class="cline" points="{poly}"\n                fill="none" stroke="{CHART['dark']['line']}" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n'
          + "\n".join(verts) + "\n" + s[b:])
     s, count = re.subn(r'(<g id="sparkle">\s*<path [^>]*? fill=")#\w+"', rf'\g<1>{CHART["dark"]["star"]}"', s)
     assert count == 1, "sparkle for the brightest star not found"
-    # point the telescope at the final star and run the sight line from its eyepiece to the star
+    # point the telescope at the final star and run the sight line from its far end to the star
     ex, ey = pts[-1][1], pts[-1][2]
-    tx, ty = 958, 128 + 190                      # telescope pivot in banner coordinates
+    ground = int(re.search(r'<g transform="translate\(0,(\d+)\)">\s*<!-- the moon surface -->', s).group(1))
+    tx, ty = map(int, re.search(r'<!-- the bot peering through its telescope.*?<g transform="translate\((\d+),(\d+)\)">',
+                                s, re.S).groups())
+    ty += ground                                 # the telescope's pivot, in banner rather than moon coordinates
     angle = math.degrees(math.atan2(ex - tx, ty - ey))   # 0 is straight up, positive leans right
     s = re.sub(r'<g transform="rotate\(-?[\d.]+\)">', f'<g transform="rotate({angle:.0f})">', s)
-    sx = round(tx - 16 * math.sin(math.radians(angle)))
-    sy = round(ty - 16 * math.cos(math.radians(angle))) - 190
-    s = re.sub(r'<line class="sight" x1="-?\d+" y1="-?\d+" x2="-?\d+" y2="-?\d+"', f'<line class="sight" x1="{sx}" y1="{sy}" x2="{ex}" y2="{ey - 190 + 8}"', s)
+    sx = round(tx + 16 * math.sin(math.radians(angle)))   # 16 units up the tilted tube, at its far end
+    sy = round(ty - 16 * math.cos(math.radians(angle))) - ground
+    s = re.sub(r'<line class="sight" x1="-?\d+" y1="-?\d+" x2="-?\d+" y2="-?\d+"', f'<line class="sight" x1="{sx}" y1="{sy}" x2="{ex}" y2="{ey - ground + 8}"', s)
     # background stars must not sit inside a label; drop any that do (labels are 15px mono, ~9px per glyph)
     boxes = []
     for i, (t, x, y) in enumerate(pts):
@@ -115,37 +125,50 @@ def constellation():
     return listed
 
 
+def swap(text, old, new):
+    """Replace old with new, stopping the build if the hand-drawn banner no longer contains old."""
+    assert old in text, f"banner-dark.svg no longer contains: {old[:70]}"
+    return text.replace(old, new)
+
+
 def light_banner():
-    """Recolour the hand-drawn dark banner into a dawn edition: pale sky, navy stars and lines."""
+    """Recolour the hand-drawn dark banner into a dawn edition: a pale sky warming towards the horizon."""
     s = (OUT / "banner-dark.svg").read_text()
-    # sky: fade from the white page into a pale blue dawn
+    # sky: a soft blue-grey dawn, warming to off-white at the horizon
     s = re.sub(r'(<linearGradient id="sky".*?</linearGradient>)',
-               '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/>'
-               '<stop offset="30%" stop-color="#D9E0F7"/><stop offset="100%" stop-color="#B9C7F0"/></linearGradient>', s, flags=re.S)
-    s = s.replace('stop-color="#C2C7D6"', 'stop-color="#D3D8E6"').replace('stop-color="#848BA1"', 'stop-color="#AEB5C8"')
-    # everything white in the sky (stars, labels, caption, shooting star, flag pole) becomes navy, and the
-    # constellation's gold stars and blue-grey line take their light versions
+               '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">'
+               '<stop offset="0%" stop-color="#CFDCF0"/><stop offset="100%" stop-color="#F3EEE6"/></linearGradient>', s, flags=re.S)
+    s = swap(s, 'stop-color="#CFCAC0"', 'stop-color="#DCD8CF"')      # the moon, a little paler by day
+    s = swap(s, 'stop-color="#A29D93"', 'stop-color="#D2CDC3"')
+    # the background stars turn slate and the shooting star navy; the constellation and planet take their
+    # light versions
     head, rest = s.split('<!-- background starfield -->', 1)
     sky, ground = rest.split('<!-- the moon surface -->', 1)
-    sky = sky.replace('#FFFFFF', '#1F2440')
+    sky = swap(sky, '<g class="stars" fill="#FFFFFF">', '<g class="stars" fill="#5B6B8A">')
+    sky = swap(sky, '#FFFFFF', '#1F2440')
     for part in ("star", "line"):
-        sky = sky.replace(CHART["dark"][part], CHART["light"][part])
-    ground = ground.replace('stroke="#F2F4FA"', 'stroke="#1F2440"').replace('stroke="#E8EAF2"', 'stroke="#1F2440"')
-    ground = ground.replace('stroke="#B7A6FF"', 'stroke="#3A22A6"').replace('fill="#0B0725"', 'fill="#4A3DB8"')
-    ground = ground.replace('stroke="#FFD98A" stroke-opacity="0.25"', 'stroke="#3B4A8C" stroke-opacity="0.45"')
+        sky = swap(sky, CHART["dark"][part], CHART["light"][part])
+    sky = swap(sky, LABELS["dark"], LABELS["light"])
+    sky = swap(sky, '#5D6F99', '#9AAED0')
+    ground = swap(ground, 'stroke="#EAE5DB" stroke-opacity="0.8"', 'stroke="#C4BFB3" stroke-opacity="1"')
+    ground = swap(ground, 'fill="#3F4452" fill-opacity="0.85">star chart', 'fill="#5C6474" fill-opacity="1">star chart')
+    ground = swap(ground, 'stroke="#F2F4FA"', 'stroke="#1F2440"')
+    ground = swap(ground, 'stroke="#E8EAF2"', 'stroke="#1F2440"')
+    ground = swap(ground, 'stroke="#B7A6FF"', 'stroke="#3A22A6"')
+    ground = swap(ground, 'fill="#0B0725"', 'fill="#4A3DB8"')
+    ground = swap(ground, 'stroke="#FFD98A" stroke-opacity="0.25"', 'stroke="#3B4A8C" stroke-opacity="0.45"')
     # the bot stays white but gets an outline so it reads against the pale sky
-    ground = ground.replace('<line x1="-13" y1="-8" x2="-24" y2="-18" stroke="#FFFFFF" stroke-opacity="0.93"', '<line x1="-13" y1="-8" x2="-24" y2="-18" stroke="#9A8CF0" stroke-opacity="0.95"')
-    ground = ground.replace('<circle cx="-25" cy="-20" r="3" fill="#FFFFFF" fill-opacity="0.95"/>', '<circle cx="-25" cy="-20" r="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#9A8CF0" stroke-width="1"/>')
-    ground = ground.replace('<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93"/>',
-                            '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93" stroke="#9A8CF0" stroke-width="1.2"/>')
-    head = head.replace('<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93"/>',
-                        '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93" stroke="#9A8CF0" stroke-width="1.2"/>')
-    head = head.replace('stop-color="#FFFFFF"', 'stop-color="#1F2440"')
+    ground = swap(ground, '<line x1="13" y1="-4" x2="19" y2="-11" stroke="#FFFFFF" stroke-opacity="0.93"', '<line x1="13" y1="-4" x2="19" y2="-11" stroke="#9A8CF0" stroke-opacity="0.95"')
+    ground = swap(ground, '<circle cx="20" cy="-13" r="3" fill="#FFFFFF" fill-opacity="0.95"/>', '<circle cx="20" cy="-13" r="3" fill="#FFFFFF" fill-opacity="0.95" stroke="#9A8CF0" stroke-width="1"/>')
+    head = swap(head, '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93"/>',
+                '<rect x="-14" y="-26" width="28" height="34" rx="8" fill="#FFFFFF" fill-opacity="0.93" stroke="#9A8CF0" stroke-width="1.2"/>')
     # the sparkle and the bot's antenna stalk are shared definitions, so recolour them here too
-    head = head.replace(f'Z" fill="{CHART["dark"]["star"]}"', f'Z" fill="{CHART["light"]["star"]}"')
-    head = head.replace('<line x1="0" y1="-26" x2="0" y2="-33" stroke="#FFFFFF" stroke-opacity="0.9"', '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#1F2440" stroke-opacity="0.9"')
-    head = head.replace('A quiet moonscape at night', 'A quiet moonscape at dawn')
-    sky = sky.replace('fill-opacity="0.65">star chart, not price chart', 'fill-opacity="0.75">star chart, not price chart')
+    head = swap(head, f'Z" fill="{CHART["dark"]["star"]}"', f'Z" fill="{CHART["light"]["star"]}"')
+    head = swap(head, '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#FFFFFF" stroke-opacity="0.9"', '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#1F2440" stroke-opacity="0.9"')
+    # white legs vanish against the pale horizon, so they take the outline's purple
+    for x in (-6, 6):
+        head = swap(head, f'<line x1="{x}" y1="8" x2="{x}" y2="15" stroke="#FFFFFF"', f'<line x1="{x}" y1="8" x2="{x}" y2="15" stroke="#9A8CF0"')
+    head = swap(head, 'A quiet moonscape at night', 'A quiet moonscape at dawn')
     out = head + '<!-- background starfield -->' + sky + '<!-- the moon surface -->' + ground
     (OUT / "banner-light.svg").write_text(out)
     print("wrote banner-light.svg", f"{len(out)//1024} KB")
@@ -174,7 +197,6 @@ CARD_THEMES = {
     "dark": dict(top="#121b31", bottom="#0d1117", edge="#2e3a52", ink="#f0f6fc", muted="#9198a1", line=CHART["dark"]["line"],
                  star=CHART["dark"]["star"], strip="#151b23", link="#4493f8", rule="#3d444d"),
 }
-SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
 MERGED = "/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged"
 CARDS = OUT / "cards"
 WRAP = 57          # characters per summary line; 57 fits the 440-wide card in GitHub's system fonts

@@ -1,22 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="1200" height="380" role="img" aria-label="A quiet moonscape at night: a small robot with a telescope watches a constellation shaped like a rising chart draw itself across the sky with a star for each of Rust, Python, Go, TypeScript, SQL, PostgreSQL, GraphQL, Docker, Kafka, Redpanda, Ansible, Kubernetes, Proxmox and Solidity, a purple flag stands planted in the surface, and the caption reads star chart, not price chart">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0d1117"/>
-      <stop offset="25%" stop-color="#04050E"/>
+      <stop offset="0%" stop-color="#04050E"/>
       <stop offset="60%" stop-color="#0B0F2E"/>
       <stop offset="100%" stop-color="#1B1147"/>
     </linearGradient>
     <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#C2C7D6"/>
-      <stop offset="100%" stop-color="#848BA1"/>
+      <stop offset="0%" stop-color="#CFCAC0"/>
+      <stop offset="100%" stop-color="#A29D93"/>
     </linearGradient>
-    <radialGradient id="earthball" cx="0.35" cy="0.35" r="0.9">
-      <stop offset="0%" stop-color="#5B9BF0"/>
-      <stop offset="70%" stop-color="#2E6FDB"/>
-      <stop offset="100%" stop-color="#1B4CA8"/>
-    </radialGradient>
-    <clipPath id="frame"><rect width="1200" height="380"/></clipPath>
-    <clipPath id="earthclip"><circle cx="1108" cy="38" r="13"/></clipPath>
+    <clipPath id="frame"><rect width="1200" height="380" rx="14"/></clipPath>
     <!-- a 4-point sparkle for the brightest star -->
     <g id="sparkle">
       <path d="M0,-6 L1.4,-1.4 L6,0 L1.4,1.4 L0,6 L-1.4,1.4 L-6,0 L-1.4,-1.4 Z" fill="#ffd772" fill-opacity="0.95"/>
@@ -36,12 +29,12 @@
     <style>
       /* the constellation draws itself in once over the first 7 seconds, then holds so it can be read */
       .cline {
-        stroke-dasharray: 1110;
+        stroke-dasharray: 1170;
         animation: draw 22s linear 1 forwards;
       }
       @keyframes draw {
-        0%    { stroke-dashoffset: 1110; }
-        4.5%  { stroke-dashoffset: 1110; }
+        0%    { stroke-dashoffset: 1170; }
+        4.5%  { stroke-dashoffset: 1170; }
         32%   { stroke-dashoffset: 0; }
         100%  { stroke-dashoffset: 0; }
       }
@@ -62,17 +55,17 @@
       .caption { animation: captionIn 22s linear 1 both; }
       @keyframes ignite1 { 0%, 4.5% { opacity: 0; } 6.0% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite2 { 0%, 6.8% { opacity: 0; } 8.3% { opacity: 1; } 100% { opacity: 1; } }
-      @keyframes ignite3 { 0%, 8.8% { opacity: 0; } 10.3% { opacity: 1; } 100% { opacity: 1; } }
+      @keyframes ignite3 { 0%, 8.7% { opacity: 0; } 10.2% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite4 { 0%, 11.1% { opacity: 0; } 12.6% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite5 { 0%, 13.0% { opacity: 0; } 14.5% { opacity: 1; } 100% { opacity: 1; } }
-      @keyframes ignite6 { 0%, 15.4% { opacity: 0; } 16.9% { opacity: 1; } 100% { opacity: 1; } }
+      @keyframes ignite6 { 0%, 15.3% { opacity: 0; } 16.8% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite7 { 0%, 17.3% { opacity: 0; } 18.8% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite8 { 0%, 19.6% { opacity: 0; } 21.1% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite9 { 0%, 21.5% { opacity: 0; } 23.0% { opacity: 1; } 100% { opacity: 1; } }
-      @keyframes ignite10 { 0%, 23.9% { opacity: 0; } 25.4% { opacity: 1; } 100% { opacity: 1; } }
+      @keyframes ignite10 { 0%, 23.8% { opacity: 0; } 25.3% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite11 { 0%, 25.8% { opacity: 0; } 27.3% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite12 { 0%, 28.1% { opacity: 0; } 29.6% { opacity: 1; } 100% { opacity: 1; } }
-      @keyframes ignite13 { 0%, 30.1% { opacity: 0; } 31.6% { opacity: 1; } 100% { opacity: 1; } }
+      @keyframes ignite13 { 0%, 30.0% { opacity: 0; } 31.5% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes ignite14 { 0%, 32.0% { opacity: 0; } 33.5% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes captionIn { 0%, 34% { opacity: 0; } 38%   { opacity: 1; } 100% { opacity: 1; } }
       /* background stars breathe on their own slow clocks */
@@ -89,8 +82,9 @@
         54%     { opacity: 0; transform: translate(420px, 150px); }
         100%    { opacity: 0; transform: translate(420px, 150px); }
       }
-      /* the telescope sight-line drifts, the antenna light breathes */
-      .sight { animation: march 2s linear infinite; }
+      /* the telescope sight-line appears once the last star is lit, then drifts; the antenna light breathes */
+      .sight { animation: march 2s linear infinite, sightIn 22s linear 1 both; }
+      @keyframes sightIn { 0%, 33.5% { opacity: 0; } 36.0% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes march { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -16; } }
       .beacon { animation: pulse 2.8s ease-in-out infinite alternate; }
       @keyframes pulse { from { opacity: 1; } to { opacity: 0.45; } }
@@ -103,13 +97,12 @@
     </style>
   </defs>
 
-  <rect width="1200" height="380" fill="url(#sky)"/>
+  <rect width="1200" height="380" rx="14" fill="url(#sky)"/>
   <g clip-path="url(#frame)">
 
     <!-- background starfield -->
     <g class="stars" fill="#FFFFFF">
       <circle cx="60" cy="34" r="1.2" fill-opacity="0.55"/>
-      <circle cx="118" cy="72" r="1" fill-opacity="0.4"/>
       <circle cx="205" cy="30" r="1.4" fill-opacity="0.6"/>
       <circle cx="282" cy="58" r="1" fill-opacity="0.35"/>
       <circle cx="352" cy="26" r="1.2" fill-opacity="0.5"/>
@@ -118,7 +111,6 @@
       <circle cx="540" cy="22" r="1" fill-opacity="0.45"/>
       <circle cx="602" cy="58" r="1.2" fill-opacity="0.4"/>
       <circle cx="724" cy="24" r="1.3" fill-opacity="0.6"/>
-      <circle cx="846" cy="70" r="1.2" fill-opacity="0.5"/>
       <circle cx="890" cy="20" r="1" fill-opacity="0.45"/>
       <circle cx="962" cy="66" r="1.2" fill-opacity="0.45"/>
       <circle cx="1032" cy="96" r="1" fill-opacity="0.4"/>
@@ -155,133 +147,129 @@
       <line x1="620" y1="8" x2="652" y2="17" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="1.6" stroke-linecap="round"/>
     </g>
 
-    <!-- earth, small and far away -->
-    <g>
-      <circle cx="1108" cy="38" r="14.5" fill="#5B9BF0" fill-opacity="0.18"/>
-      <circle cx="1108" cy="38" r="13" fill="url(#earthball)"/>
-      <g clip-path="url(#earthclip)">
-        <path d="M1098,32 q5,-4 10,-1 q4,2 1,6 q-5,3 -9,0 q-4,-2 -2,-5 Z" fill="#3FA968" fill-opacity="0.9"/>
-        <path d="M1108,45 q6,-3 10,1 q2,3 -2,5 q-6,2 -9,-2 q-2,-2 1,-4 Z" fill="#3FA968" fill-opacity="0.85"/>
-        <circle cx="1114" cy="33" r="13" fill="#04050E" fill-opacity="0.3"/>
-      </g>
+    <!-- a ringed planet in the empty corner of the sky; the ring passes behind it, then in front -->
+    <g transform="translate(100,80) rotate(-16)" fill="none" stroke="#5D6F99" stroke-width="2.5" stroke-opacity="0.8">
+      <path d="M-28,0 A28,7 0 0,1 28,0"/>
+      <circle r="15" fill="#5D6F99" fill-opacity="0.9" stroke="none"/>
+      <path d="M-28,0 A28,7 0 0,0 28,0"/>
     </g>
 
     <!-- the constellation: a rising chart that draws itself in -->
     <g class="scene">
-      <polyline class="cline" points="165,276 232,211 300,250 367,185 434,224 502,159 569,198 636,132 703,171 771,106 838,145 905,80 973,119 1040,80"
-                fill="none" stroke="#8ea6dc" stroke-opacity="0.55" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline class="cline" points="165,266 238,200 310,238 383,171 456,209 528,143 601,181 674,114 747,152 819,86 892,124 965,57 1037,95 1110,55"
+                fill="none" stroke="#8ea6dc" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <g class="v1">
-        <circle cx="165" cy="276" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="165" cy="276" r="1.9" fill="#ffd772" fill-opacity="0.85"/>
-        <text x="165" y="298" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Rust</text>
+        <circle cx="165" cy="266" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="165" cy="266" r="5" fill="#ffd772"/>
+        <text x="165" y="293" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Rust</text>
       </g>
       <g class="v2">
-        <circle cx="232" cy="211" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="232" cy="211" r="2.2" fill="#ffd772" fill-opacity="0.95"/>
-        <text x="232" y="195" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Python</text>
+        <circle cx="238" cy="200" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="238" cy="200" r="5" fill="#ffd772"/>
+        <text x="238" y="184" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Python</text>
       </g>
       <g class="v3">
-        <circle cx="300" cy="250" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="300" cy="250" r="1.9" fill="#ffd772" fill-opacity="0.85"/>
-        <text x="300" y="272" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Go</text>
+        <circle cx="310" cy="238" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="310" cy="238" r="5" fill="#ffd772"/>
+        <text x="310" y="265" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Go</text>
       </g>
       <g class="v4">
-        <circle cx="367" cy="185" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="367" cy="185" r="2.2" fill="#ffd772" fill-opacity="0.95"/>
-        <text x="367" y="169" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">TypeScript</text>
+        <circle cx="383" cy="171" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="383" cy="171" r="5" fill="#ffd772"/>
+        <text x="383" y="155" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">TypeScript</text>
       </g>
       <g class="v5">
-        <circle cx="434" cy="224" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="434" cy="224" r="1.9" fill="#ffd772" fill-opacity="0.85"/>
-        <text x="434" y="246" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">SQL</text>
+        <circle cx="456" cy="209" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="456" cy="209" r="5" fill="#ffd772"/>
+        <text x="456" y="236" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">SQL</text>
       </g>
       <g class="v6">
-        <circle cx="502" cy="159" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="502" cy="159" r="2.2" fill="#ffd772" fill-opacity="0.95"/>
-        <text x="502" y="143" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">PostgreSQL</text>
+        <circle cx="528" cy="143" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="528" cy="143" r="5" fill="#ffd772"/>
+        <text x="528" y="127" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">PostgreSQL</text>
       </g>
       <g class="v7">
-        <circle cx="569" cy="198" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="569" cy="198" r="1.9" fill="#ffd772" fill-opacity="0.85"/>
-        <text x="569" y="220" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">GraphQL</text>
+        <circle cx="601" cy="181" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="601" cy="181" r="5" fill="#ffd772"/>
+        <text x="601" y="208" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">GraphQL</text>
       </g>
       <g class="v8">
-        <circle cx="636" cy="132" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="636" cy="132" r="2.2" fill="#ffd772" fill-opacity="0.95"/>
-        <text x="636" y="116" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Docker</text>
+        <circle cx="674" cy="114" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="674" cy="114" r="5" fill="#ffd772"/>
+        <text x="674" y="98" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Docker</text>
       </g>
       <g class="v9">
-        <circle cx="703" cy="171" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="703" cy="171" r="1.9" fill="#ffd772" fill-opacity="0.85"/>
-        <text x="703" y="193" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Kafka</text>
+        <circle cx="747" cy="152" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="747" cy="152" r="5" fill="#ffd772"/>
+        <text x="747" y="179" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Kafka</text>
       </g>
       <g class="v10">
-        <circle cx="771" cy="106" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="771" cy="106" r="2.2" fill="#ffd772" fill-opacity="0.95"/>
-        <text x="771" y="90" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Redpanda</text>
+        <circle cx="819" cy="86" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="819" cy="86" r="5" fill="#ffd772"/>
+        <text x="819" y="70" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Redpanda</text>
       </g>
       <g class="v11">
-        <circle cx="838" cy="145" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="838" cy="145" r="1.9" fill="#ffd772" fill-opacity="0.85"/>
-        <text x="838" y="167" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Ansible</text>
+        <circle cx="892" cy="124" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="892" cy="124" r="5" fill="#ffd772"/>
+        <text x="892" y="151" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Ansible</text>
       </g>
       <g class="v12">
-        <circle cx="905" cy="80" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="905" cy="80" r="2.2" fill="#ffd772" fill-opacity="0.95"/>
-        <text x="905" y="64" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Kubernetes</text>
+        <circle cx="965" cy="57" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="965" cy="57" r="5" fill="#ffd772"/>
+        <text x="965" y="41" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Kubernetes</text>
       </g>
       <g class="v13">
-        <circle cx="973" cy="119" r="5" fill="#ffd772" fill-opacity="0.1"/>
-        <circle cx="973" cy="119" r="1.9" fill="#ffd772" fill-opacity="0.85"/>
-        <text x="973" y="141" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Proxmox</text>
+        <circle cx="1037" cy="95" r="11" fill="#ffd772" fill-opacity="0.28"/>
+        <circle cx="1037" cy="95" r="5" fill="#ffd772"/>
+        <text x="1037" y="122" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Proxmox</text>
       </g>
       <g class="vspark">
-        <circle cx="1040" cy="80" r="7" fill="#ffd772" fill-opacity="0.12"/>
-        <use href="#sparkle" transform="translate(1040,80)"/>
-        <text x="1030" y="62" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#FFFFFF" fill-opacity="0.8">Solidity</text>
+        <circle cx="1110" cy="55" r="13" fill="#ffd772" fill-opacity="0.28"/>
+        <use href="#sparkle" transform="translate(1110,55) scale(1.5)"/>
+        <text x="1100" y="35" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#c8d3ec">Solidity</text>
       </g>
-      <text class="caption" x="543" y="300" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#FFFFFF" fill-opacity="0.65">star chart, not price chart</text>
     </g>
 
-    <g transform="translate(0,190)">
+    <g transform="translate(0,160)">
     <!-- the moon surface -->
-    <path d="M0,152 C120,144 220,158 340,150 C460,142 560,156 700,148 C840,140 960,154 1080,146 C1140,142 1180,146 1200,144 L1200,190 L0,190 Z" fill="url(#ground)"/>
+    <path d="M0,152 C120,144 220,158 340,150 C460,142 560,156 700,148 C840,140 960,154 1080,146 C1140,142 1180,146 1200,144 L1200,220 L0,220 Z" fill="url(#ground)"/>
+    <path d="M0,152 C120,144 220,158 340,150 C460,142 560,156 700,148 C840,140 960,154 1080,146 C1140,142 1180,146 1200,144" fill="none" stroke="#EAE5DB" stroke-opacity="0.8" stroke-width="2"/>
 
     <!-- craters -->
-    <g>
-      <ellipse cx="150" cy="172" rx="20" ry="6" fill="#6E7488" fill-opacity="0.55"/>
-      <path d="M132,170 Q150,163 168,170" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
-      <ellipse cx="405" cy="180" rx="26" ry="7" fill="#6E7488" fill-opacity="0.5"/>
-      <path d="M381,178 Q405,170 429,178" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
-      <ellipse cx="742" cy="176" rx="16" ry="5" fill="#6E7488" fill-opacity="0.5"/>
-      <path d="M727,174 Q742,168 757,174" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.4"/>
-      <ellipse cx="1130" cy="180" rx="22" ry="6" fill="#6E7488" fill-opacity="0.5"/>
-      <path d="M1110,178 Q1130,171 1150,178" fill="none" stroke="#DDE1EC" stroke-opacity="0.7" stroke-width="1.6"/>
+    <g fill="#6B6559" fill-opacity="0.2">
+      <ellipse cx="160" cy="180" rx="30" ry="5"/>
+      <ellipse cx="410" cy="198" rx="52" ry="8"/>
+      <ellipse cx="650" cy="176" rx="20" ry="3.5"/>
+      <ellipse cx="760" cy="204" rx="58" ry="9"/>
+      <ellipse cx="1100" cy="170" rx="24" ry="4"/>
     </g>
 
-    <!-- a planted flag, quietly purple -->
+    <text class="caption" x="1172" y="202" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="19" fill="#3F4452" fill-opacity="0.85">star chart, not price chart</text>
+
+    <!-- a planted flag, quietly purple, hung from a crossbar as on the moon landings -->
     <g>
-      <line x1="92" y1="150" x2="92" y2="116" stroke="#F2F4FA" stroke-width="2.4" stroke-linecap="round"/>
-      <path d="M93,117 L124,122 L93,129 Z" fill="#6747ED" fill-opacity="0.95"/>
-      <ellipse cx="92" cy="151" rx="7" ry="2.2" fill="#5A6076" fill-opacity="0.6"/>
+      <line x1="92" y1="152" x2="92" y2="108" stroke="#F2F4FA" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="92" y1="110" x2="124" y2="110" stroke="#F2F4FA" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M93,111 L123,111 L123,128 Q116,126 108,129 Q100,131 93,129 Z" fill="#6747ED" fill-opacity="0.95"/>
+      <path d="M108,111 Q106,120 108,129" fill="none" stroke="#2A1A8C" stroke-opacity="0.35" stroke-width="1.2"/>
     </g>
 
-    <!-- the bot and its telescope, watching the last star -->
+    <!-- the bot peering through its telescope at the last star -->
     <g>
-      <g transform="translate(958,128)">
-        <line x1="-6" y1="18" x2="-14" y2="34" stroke="#E8EAF2" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
-        <line x1="6" y1="18" x2="14" y2="34" stroke="#E8EAF2" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
-        <line x1="0" y1="18" x2="0" y2="36" stroke="#E8EAF2" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
-        <g transform="rotate(19)">
+      <g transform="translate(1020,98)">
+        <line x1="0" y1="4" x2="-16" y2="56" stroke="#E8EAF2" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="0" y1="4" x2="16" y2="56" stroke="#E8EAF2" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="0" y1="4" x2="0" y2="58" stroke="#E8EAF2" stroke-opacity="0.9" stroke-width="2.2" stroke-linecap="round"/>
+        <g transform="rotate(24)">
           <rect x="-6" y="14" width="11" height="9" rx="2.5" fill="#0B0725" stroke="#B7A6FF" stroke-opacity="0.55" stroke-width="1.2"/>
           <rect x="-5" y="-14" width="9" height="30" rx="4" fill="#0B0725" stroke="#B7A6FF" stroke-opacity="0.55" stroke-width="1.4"/>
           <rect x="-6.5" y="-17" width="12" height="5" rx="2.4" fill="#0B0725" stroke="#B7A6FF" stroke-opacity="0.55" stroke-width="1.4"/>
         </g>
       </g>
-      <line class="sight" x1="953" y1="113" x2="1040" y2="-102" stroke="#FFD98A" stroke-opacity="0.25" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round"/>
-      <g transform="translate(1006,132) scale(0.95)">
-        <line x1="-13" y1="-8" x2="-24" y2="-18" stroke="#FFFFFF" stroke-opacity="0.93" stroke-width="3.4" stroke-linecap="round"/>
-        <circle cx="-25" cy="-20" r="3" fill="#FFFFFF" fill-opacity="0.95"/>
+      <line class="sight" x1="1026" y1="83" x2="1110" y2="-97" stroke="#FFD98A" stroke-opacity="0.25" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+      <g transform="translate(992,132) scale(0.95)">
+        <line x1="13" y1="-4" x2="19" y2="-11" stroke="#FFFFFF" stroke-opacity="0.93" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="20" cy="-13" r="3" fill="#FFFFFF" fill-opacity="0.95"/>
         <use href="#bot"/>
       </g>
     </g>

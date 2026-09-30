@@ -224,8 +224,9 @@ def strip(T):
 def header(T, organisation, count):
     """The organisation's name, a rule, and how many projects follow, lined up with the cards' text."""
     rule_start = round(31 + len(organisation) * 13.8 + 18)   # 13.8 is roughly 1 bold 24px character
+    rule_end = round(867 - len(count) * 7 - 18)              # 7 is roughly 1 regular 13px character
     return svg(900, 64, organisation, f"""  <text x="31" y="41" font-size="24" font-weight="700" fill="{T['ink']}">{html.escape(organisation)}</text>
-  <line x1="{rule_start}" y1="32" x2="780" y2="32" stroke="{T['rule']}" stroke-width="1.5"/>
+  <line x1="{rule_start}" y1="32" x2="{rule_end}" y2="32" stroke="{T['rule']}" stroke-width="1.5"/>
   <text x="867" y="37" text-anchor="end" font-size="13" fill="{T['muted']}">{count}</text>""")
 
 
@@ -244,7 +245,7 @@ def work_cards():
         (CARDS / f"merged-{theme}.svg").write_text(strip(T))
     sections = []
     for organisation, projects in WORK:
-        count = f"{len(projects)} project{'s' if len(projects) != 1 else ''}"
+        count = f"{len(projects)} selected project{'s' if len(projects) != 1 else ''}"
         for theme, T in CARD_THEMES.items():
             (CARDS / f"{slug(organisation)}-{theme}.svg").write_text(header(T, organisation, count))
         rows = [f'<p align="center">{picture(slug(organisation), organisation, "100%")}</p>']

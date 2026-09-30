@@ -78,8 +78,9 @@
         54%     { opacity: 0; transform: translate(420px, 150px); }
         100%    { opacity: 0; transform: translate(420px, 150px); }
       }
-      /* the telescope sight-line drifts, the antenna light breathes */
-      .sight { animation: march 2s linear infinite; }
+      /* the telescope sight-line appears once the last star is lit, then drifts; the antenna light breathes */
+      .sight { animation: march 2s linear infinite, sightIn 22s linear 1 both; }
+      @keyframes sightIn { 0%, 33.5% { opacity: 0; } 36.0% { opacity: 1; } 100% { opacity: 1; } }
       @keyframes march { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -16; } }
       .beacon { animation: pulse 2.8s ease-in-out infinite alternate; }
       @keyframes pulse { from { opacity: 1; } to { opacity: 0.45; } }

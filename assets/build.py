@@ -4,7 +4,11 @@
 Run from the repo root: python3 assets/build.py. It rewrites the constellation in the hand-drawn
 banner-dark.svg from the STARS list (edit that list to add or remove a skill), keeps the alt text in
 the SVG and README in step, and derives banner-light.svg from the dark one by recolouring it.
+
+It also draws the "Selected work" cards into assets/cards from the WORK list (edit that list to add,
+remove or reword a project) and rewrites that section of the README to show them.
 """
+import html
 import re
 from pathlib import Path
 
@@ -141,9 +145,134 @@ def light_banner():
 
 
 
+WORK = [  # (organisation, [(repo, name, suffix, language, summary), ...]); cards sit 2 to a row
+    ("The Graph", [
+        ("edgeandnode/dipper", "dipper", "", "Rust",
+         "The direct indexer payments gateway for The Graph. Sends and manages the state of indexing agreements."),
+        ("graphprotocol/indexer-rs", "indexer-rs", "", "Rust",
+         "The service that indexers run to receive, verify and answer indexing agreement proposals."),
+        ("edgeandnode/subgraph-dips-indexer-selection", "subgraph-dips-indexer-selection", "(IISA)", "Python",
+         "This service uses a selection algorithm to pick the best indexers to serve paid indexing agreements "
+         "on each subgraph, minimising gateway cost and latency while maximising decentralisation, success "
+         "rate and uptime."),
+        ("graphprotocol/rewards-eligibility-oracle", "rewards-eligibility-oracle", "", "Python",
+         "This oracle decides which indexers qualify for The Graph's indexing rewards, using a binary "
+         "eligibility algorithm and records the decision into the RewardsEligibilityOracle contract on Arbitrum."),
+    ]),
+]
+LANGUAGES = {"Rust": "#dea584", "Python": "#3572A5", "Go": "#00ADD8", "TypeScript": "#3178c6"}  # GitHub's colours
+CARD_THEMES = {
+    "light": dict(top="#eaf0fa", bottom="#fbfaf7", edge="#d1d9e0", ink="#1f2328", muted="#59636e", line="#6d80a6",
+                  star="#c98a12", strip="#f6f8fa", link="#0969da", rule="#d1d9e0"),
+    "dark": dict(top="#121b31", bottom="#0d1117", edge="#2e3a52", ink="#f0f6fc", muted="#9198a1", line="#8ea6dc",
+                 star="#ffd772", strip="#151b23", link="#4493f8", rule="#3d444d"),
+}
+SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
+MERGED = "/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged"
+CARDS = OUT / "cards"
+WRAP = 57          # characters per summary line; 57 fits the 440-wide card in GitHub's system fonts
+MOTIF = [(350, 44), (363, 33), (376, 37), (390, 22), (403, 26), (417, 12)]   # a tiny rising star chart
+
+
+def slug(text):
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def wrap(text):
+    lines, line = [], ""
+    for word in text.split():
+        if line and len(line) + 1 + len(word) > WRAP:
+            lines.append(line)
+            line = word
+        else:
+            line = f"{line} {word}".strip()
+    return lines + [line]
+
+
+def svg(w, h, label, body):
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" '
+            f'aria-label="{html.escape(label)}" font-family="{SANS}">\n{body}\n</svg>\n')
+
+
+def card(T, name, suffix, language, summary, h):
+    """1 project: language, name and summary on a soft gradient, with the star chart in the corner."""
+    e = html.escape
+    chart = " ".join(f"{x},{y}" for x, y in MOTIF)
+    dots = "".join(f'<circle cx="{x}" cy="{y}" r="{2.8 if i == len(MOTIF) - 1 else 1.9}"/>' for i, (x, y) in enumerate(MOTIF))
+    title = e(name) + (f' <tspan font-weight="400" fill="{T["muted"]}">{e(suffix)}</tspan>' if suffix else "")
+    lines = "".join(f'<tspan x="24" y="{104 + i * 21}">{e(t)}</tspan>' for i, t in enumerate(wrap(summary)))
+    return svg(440, h, f"{name} {suffix}".strip() + f", {language}: {summary}", f"""  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="{T['top']}"/><stop offset="1" stop-color="{T['bottom']}"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="438" height="{h - 2}" rx="12" fill="url(#bg)" stroke="{T['edge']}" stroke-width="1.5"/>
+  <polyline points="{chart}" fill="none" stroke="{T['line']}" stroke-width="1.2" stroke-opacity="0.55"/>
+  <g fill="{T['star']}">{dots}</g>
+  <circle cx="29" cy="34" r="5" fill="{LANGUAGES[language]}"/>
+  <text x="41" y="38.5" font-size="13" fill="{T['muted']}">{e(language)}</text>
+  <text x="24" y="74" font-size="18" font-weight="700" fill="{T['ink']}">{title}</text>
+  <text font-size="14.5" fill="{T['ink']}" fill-opacity="0.88">{lines}</text>""")
+
+
+def strip(T):
+    """The 'See my merged changes' bar under each card; every card shares it, only the link differs."""
+    return svg(440, 40, "See my merged changes", f"""  <rect x="1" y="1" width="438" height="38" rx="10" fill="{T['strip']}" stroke="{T['edge']}" stroke-width="1.5"/>
+  <text x="220" y="25" text-anchor="middle" font-size="14" font-weight="500" fill="{T['link']}">See my merged changes</text>""")
+
+
+def header(T, organisation, count):
+    """The organisation's name, a rule, and how many projects follow, lined up with the cards' text."""
+    rule_start = round(31 + len(organisation) * 13.8 + 18)   # 13.8 is roughly 1 bold 24px character
+    return svg(900, 64, organisation, f"""  <text x="31" y="41" font-size="24" font-weight="700" fill="{T['ink']}">{html.escape(organisation)}</text>
+  <line x1="{rule_start}" y1="32" x2="780" y2="32" stroke="{T['rule']}" stroke-width="1.5"/>
+  <text x="867" y="37" text-anchor="end" font-size="13" fill="{T['muted']}">{count}</text>""")
+
+
+def picture(name, alt, width):
+    src = f"./assets/cards/{name}"
+    return (f'<picture><source media="(prefers-color-scheme: dark)" srcset="{src}-dark.svg">'
+            f'<img src="{src}-light.svg" width="{width}" alt="{html.escape(alt)}"></picture>')
+
+
+def work_cards():
+    """Write every card, strip and header as a light and dark SVG, and return the README markup for them."""
+    for old in CARDS.glob("*.svg"):
+        old.unlink()
+    CARDS.mkdir(exist_ok=True)
+    for theme, T in CARD_THEMES.items():
+        (CARDS / f"merged-{theme}.svg").write_text(strip(T))
+    sections = []
+    for organisation, projects in WORK:
+        count = f"{len(projects)} project{'s' if len(projects) != 1 else ''}"
+        for theme, T in CARD_THEMES.items():
+            (CARDS / f"{slug(organisation)}-{theme}.svg").write_text(header(T, organisation, count))
+        rows = [f'<p align="center">{picture(slug(organisation), organisation, "100%")}</p>']
+        for i in range(0, len(projects), 2):
+            row = projects[i:i + 2]
+            h = 126 + 21 * (max(len(wrap(p[4])) for p in row) - 1)   # both cards in a row share a height
+            cards, strips = [], []
+            for repo, name, suffix, language, summary in row:
+                for theme, T in CARD_THEMES.items():
+                    (CARDS / f"{slug(name)}-{theme}.svg").write_text(card(T, name, suffix, language, summary, h))
+                title = f"{name} {suffix}".strip()
+                cards.append(f'<a href="https://github.com/{repo}">'
+                             f'{picture(slug(name), f"{title}, {language}: {summary}", "49%")}</a>')
+                strips.append(f'<a href="https://github.com/{repo}{MERGED}">'
+                              f'{picture("merged", f"See my merged changes to {name}", "49%")}</a>')
+            rows.append('<p align="center">\n' + "\n".join(cards) + "\n<br>\n" + "\n".join(strips) + "\n</p>")
+        sections.append("\n\n".join(rows))
+    print(f"wrote {len(list(CARDS.glob('*.svg')))} card SVGs")
+    return "\n\n".join(sections)
+
+
 listed = constellation()
 light_banner()
 readme = OUT.parent / "README.md"
 text, count = re.subn(r"a star for each of .*? and \w+", f"a star for each of {listed}", readme.read_text())
 assert count == 1, "banner alt text not found in README.md"
+section = work_cards()
+text, count = re.subn(r"(<!-- selected work: generated by assets/build.py -->\n).*?(\n<!-- end of selected work -->)",
+                      lambda m: m.group(1) + section + m.group(2), text, flags=re.S)
+assert count == 1, "selected work markers not found in README.md"
 readme.write_text(text)

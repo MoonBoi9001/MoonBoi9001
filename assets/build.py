@@ -160,6 +160,9 @@ def light_banner():
     # the sparkle and the bot's antenna stalk are shared definitions, so recolour them here too
     head = swap(head, f'Z" fill="{CHART["dark"]["star"]}"', f'Z" fill="{CHART["light"]["star"]}"')
     head = swap(head, '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#FFFFFF" stroke-opacity="0.9"', '<line x1="0" y1="-26" x2="0" y2="-33" stroke="#1F2440" stroke-opacity="0.9"')
+    # white legs vanish against the pale horizon, so they take the outline's purple
+    for x in (-6, 6):
+        head = swap(head, f'<line x1="{x}" y1="8" x2="{x}" y2="15" stroke="#FFFFFF"', f'<line x1="{x}" y1="8" x2="{x}" y2="15" stroke="#9A8CF0"')
     head = swap(head, 'A quiet moonscape at night', 'A quiet moonscape at dawn')
     out = head + '<!-- background starfield -->' + sky + '<!-- the moon surface -->' + ground
     (OUT / "banner-light.svg").write_text(out)

@@ -69,7 +69,7 @@ def constellation():
     s, count = re.subn(r'@keyframes sightIn \{ 0%, [\d.]+% \{ opacity: 0; \} [\d.]+% \{',
                        f'@keyframes sightIn {{ 0%, {lit:.1f}% {{ opacity: 0; }} {lit + 2.5:.1f}% {{', s)
     assert count == 1, "sight line timing not found"
-    s = re.sub(r'      \.v1 \{ animation: ignite1.*?@keyframes ignite\d+ \{[^\n]*\n(?=      @keyframes captionIn)', "\n".join(css) + "\n", s, flags=re.S)
+    s = re.sub(r' {6}\.v1 \{ animation: ignite1.*?@keyframes ignite\d+ \{[^\n]*\n(?= {6}@keyframes captionIn)', "\n".join(css) + "\n", s, flags=re.S)
     s, count = re.subn(r'\.cline, (\.v\d+, )+\.vspark, \.caption,', '.cline, ' + ", ".join(names) + ', .caption,', s)
     assert count == 1, 'reduced-motion selector not found'
     s = re.sub(r'stroke-dasharray: \d+;', f'stroke-dasharray: {dash};', s)

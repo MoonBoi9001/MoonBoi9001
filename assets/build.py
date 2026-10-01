@@ -46,7 +46,8 @@ def constellation():
     for i, name in enumerate(STARS):
         f = i / (n - 1)
         x = round(x0 + (x1 - x0) * f)
-        y = round(y0 + (y1 - y0) * f + (0 if i == n - 1 else (amp if i % 2 == 0 else -amp)))
+        zigzag = 0 if i == n - 1 else amp * (-1) ** i   # alternate either side of the trend; the brightest star sits on it
+        y = round(y0 + (y1 - y0) * f + zigzag)
         pts.append((name, x, y))
     L, cum = 0, [0]
     for i in range(n - 1):

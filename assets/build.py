@@ -9,6 +9,7 @@ It also draws the "Selected work" cards into assets/cards from the WORK list (ed
 remove or reword a project) and rewrites that section of the README to show them.
 """
 import html
+import math
 import re
 from pathlib import Path
 
@@ -19,11 +20,13 @@ LABELS = {"dark": "#c8d3ec", "light": "#34425c"}     # the banner's skill names
 SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
 
 
-def label_offset(i, y, neighbours, n):
-    """Where a star's label sits: above peaks, below dips, so it never crosses the lines either side."""
+def label_offset(i, pts):
+    """Where star i's label sits: above peaks, below dips, so it never crosses the lines either side."""
+    n = len(pts)
     if i == n - 1:
         return -10, -20            # the brightest star is a peak, so its label sits above it too
-    above = y <= sum(neighbours) / len(neighbours)
+    neighbours = [pts[j][2] for j in (i - 1, i + 1) if 0 <= j < n]
+    above = pts[i][2] <= sum(neighbours) / len(neighbours)
     return (0, -16) if above else (0, 27)
 
 
@@ -31,15 +34,8 @@ STARS = ["Rust", "Python", "Go", "TypeScript", "SQL", "PostgreSQL", "GraphQL", "
          "Redpanda", "Ansible", "Kubernetes", "Proxmox", "Solidity"]
 
 
-def constellation():
-    """Rewrite the banner's constellation from STARS: a rising zigzag, 1 labelled star per skill.
-
-    The line draws from 4.5% to 32% of a single 22s run, each star lights as the line reaches it, and the
-    finished chart then holds rather than looping, so it can be read.
-    """
-    import math
-    p = OUT / "banner-dark.svg"
-    s = p.read_text()
+def star_points():
+    """Lay STARS out as a rising zigzag, returning (name, x, y) for each star."""
     n = len(STARS)
     x0, x1, y0, y1, amp = 165, 1110, 240, 55, 26
     pts = []
@@ -49,12 +45,23 @@ def constellation():
         zigzag = 0 if i == n - 1 else amp * (-1) ** i   # alternate either side of the trend; the brightest star sits on it
         y = round(y0 + (y1 - y0) * f + zigzag)
         pts.append((name, x, y))
-    L, cum = 0, [0]
-    for i in range(n - 1):
-        L += math.dist(pts[i][1:], pts[i + 1][1:])
-        cum.append(L)
-    dash = int(math.ceil(L / 10) * 10)
-    # timing rules
+    return pts
+
+
+def distances(pts):
+    """How far along the line each star sits, from 0 at the first star to the line's full length at the last."""
+    cum = [0]
+    for a, b in zip(pts, pts[1:]):
+        cum.append(cum[-1] + math.dist(a[1:], b[1:]))
+    return cum
+
+
+def animate(s, cum, dash):
+    """Time the line to draw from 4.5% to 32% of a single 22s run, lighting each star as the line reaches it.
+
+    The finished chart then holds rather than looping, so it can be read.
+    """
+    n = len(cum)
     css, names = [], []
     for i in range(n):
         cls = "vspark" if i == n - 1 else f"v{i+1}"
@@ -62,7 +69,7 @@ def constellation():
         css.append(f"      .{cls} {{ animation: ignite{i+1} 22s linear 1 both; }}")
     css.append("      .caption { animation: captionIn 22s linear 1 both; }")
     for i in range(n):
-        start = 4.5 + 27.5 * cum[i] / L
+        start = 4.5 + 27.5 * cum[i] / cum[-1]
         css.append(f"      @keyframes ignite{i+1} {{ 0%, {start:.1f}% {{ opacity: 0; }} {start+1.5:.1f}% {{ opacity: 1; }} 100% {{ opacity: 1; }} }}")
     # the telescope's sight line appears only once the last star is fully lit
     lit = start + 1.5
@@ -74,16 +81,19 @@ def constellation():
     assert count == 1, 'reduced-motion selector not found'
     s = re.sub(r'stroke-dasharray: \d+;', f'stroke-dasharray: {dash};', s)
     s = re.sub(r'(0%|4\.5%)(\s+)\{ stroke-dashoffset: \d+; \}', rf'\1\2{{ stroke-dashoffset: {dash}; }}', s)
-    s = re.sub(r'(32%|100%)(\s+)\{ stroke-dashoffset: \d+; \}', r'\1\2{ stroke-dashoffset: 0; }', s)
-    # vertices
+    return re.sub(r'(32%|100%)(\s+)\{ stroke-dashoffset: \d+; \}', r'\1\2{ stroke-dashoffset: 0; }', s)
+
+
+def draw_stars(s, pts):
+    """Redraw the constellation's line and its labelled stars, with a sparkle for the last and brightest."""
+    n = len(pts)
+    star = CHART["dark"]["star"]
     poly = " ".join(f"{x},{y}" for _, x, y in pts)
     verts = []
     for i, (t, x, y) in enumerate(pts):
-        nb = [pts[j][2] for j in (i - 1, i + 1) if 0 <= j < n]
-        dx, dy = label_offset(i, y, nb, n)
+        dx, dy = label_offset(i, pts)
         label = (f'<text x="{x+dx}" y="{y+dy}" text-anchor="middle" font-family="{SANS}" font-size="15" '
                  f'font-weight="600" fill="{LABELS["dark"]}">{t}</text>')
-        star = CHART["dark"]["star"]
         if i == n - 1:
             verts.append(f'      <g class="vspark">\n        <circle cx="{x}" cy="{y}" r="13" fill="{star}" fill-opacity="0.28"/>\n        <use href="#sparkle" transform="translate({x},{y}) scale(1.5)"/>\n        {label}\n      </g>')
         else:
@@ -92,10 +102,14 @@ def constellation():
     b = s.index('\n    </g>', a) + 1         # the end of the constellation's group
     s = (s[:a] + f'      <polyline class="cline" points="{poly}"\n                fill="none" stroke="{CHART['dark']['line']}" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n'
          + "\n".join(verts) + "\n" + s[b:])
-    s, count = re.subn(r'(<g id="sparkle">\s*<path [^>]*? fill=")#\w+"', rf'\g<1>{CHART["dark"]["star"]}"', s)
+    s, count = re.subn(r'(<g id="sparkle">\s*<path [^>]*? fill=")#\w+"', rf'\g<1>{star}"', s)
     assert count == 1, "sparkle for the brightest star not found"
-    # point the telescope at the final star and run the sight line from its far end to the star
-    ex, ey = pts[-1][1], pts[-1][2]
+    return s
+
+
+def aim_telescope(s, target):
+    """Point the telescope at the target star and run the sight line from the tube's far end to it."""
+    _, ex, ey = target
     ground = int(re.search(r'<g transform="translate\(0,(\d+)\)">\s*<!-- the moon surface -->', s).group(1))
     tx, ty = map(int, re.search(r'<!-- the bot peering through its telescope.*?<g transform="translate\((\d+),(\d+)\)">',
                                 s, re.S).groups())
@@ -104,12 +118,14 @@ def constellation():
     s = re.sub(r'<g transform="rotate\(-?[\d.]+\)">', f'<g transform="rotate({angle:.0f})">', s)
     sx = round(tx + 16 * math.sin(math.radians(angle)))   # 16 units up the tilted tube, at its far end
     sy = round(ty - 16 * math.cos(math.radians(angle))) - ground
-    s = re.sub(r'<line class="sight" x1="-?\d+" y1="-?\d+" x2="-?\d+" y2="-?\d+"', f'<line class="sight" x1="{sx}" y1="{sy}" x2="{ex}" y2="{ey - ground + 8}"', s)
-    # background stars must not sit inside a label; drop any that do (labels are 15px mono, ~9px per glyph)
+    return re.sub(r'<line class="sight" x1="-?\d+" y1="-?\d+" x2="-?\d+" y2="-?\d+"', f'<line class="sight" x1="{sx}" y1="{sy}" x2="{ex}" y2="{ey - ground + 8}"', s)
+
+
+def clear_labels(s, pts):
+    """Drop any background star that sits inside a skill's label (labels are 15px, ~9px per glyph)."""
     boxes = []
     for i, (t, x, y) in enumerate(pts):
-        nb = [pts[j][2] for j in (i - 1, i + 1) if 0 <= j < n]
-        dx, dy = label_offset(i, y, nb, n)
+        dx, dy = label_offset(i, pts)
         half = 9 * len(t) / 2 + 4
         boxes.append((x + dx - half, y + dy - 14, x + dx + half, y + dy + 5))
     def keep(m):
@@ -118,11 +134,23 @@ def constellation():
     a = s.index('<g class="stars"')
     b = s.index('</g>', a)
     stars_block = re.sub(r'\s*<circle cx="([\d.]+)" cy="([\d.]+)" r="[\d.]+" fill-opacity="[\d.]+"/>', keep, s[a:b])
-    s = s[:a] + stars_block + s[b:]
+    return s[:a] + stars_block + s[b:]
+
+
+def constellation():
+    """Rewrite the banner's constellation from STARS: a rising zigzag, 1 labelled star per skill."""
+    p = OUT / "banner-dark.svg"
+    pts = star_points()
+    cum = distances(pts)
+    dash = int(math.ceil(cum[-1] / 10) * 10)
+    s = animate(p.read_text(), cum, dash)
+    s = draw_stars(s, pts)
+    s = aim_telescope(s, pts[-1])
+    s = clear_labels(s, pts)
     listed = ", ".join(STARS[:-1]) + " and " + STARS[-1]
     s = re.sub(r'with a star for each of .*? and \w+,', f'with a star for each of {listed},', s)
     p.write_text(s)
-    print(f"constellation: {n} stars, path {round(L)}, dash {dash}")
+    print(f"constellation: {len(pts)} stars, path {round(cum[-1])}, dash {dash}")
     return listed
 
 

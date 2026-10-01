@@ -232,63 +232,63 @@ def svg(w, h, label, body):
             f'aria-label="{html.escape(label)}" font-family="{SANS}">\n{body}\n</svg>\n')
 
 
-def card(T, w, h, label, dot, title, summary, corner, alt):
+def card(palette, w, h, label, dot, title, summary, corner, alt):
     """A dot and label, a bold title and a wrapped summary on a soft gradient, with art in the top right corner."""
     lines = "".join(f'<tspan x="24" y="{104 + i * 21}">{html.escape(t)}</tspan>' for i, t in enumerate(wrap(summary, w)))
     return svg(w, h, alt, f"""  <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="{T['top']}"/><stop offset="1" stop-color="{T['bottom']}"/>
+      <stop offset="0" stop-color="{palette['top']}"/><stop offset="1" stop-color="{palette['bottom']}"/>
     </linearGradient>
   </defs>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="url(#bg)" stroke="{T['edge']}" stroke-width="1.5"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="url(#bg)" stroke="{palette['edge']}" stroke-width="1.5"/>
 {corner}
   <circle cx="29" cy="34" r="5" fill="{dot}"/>
-  <text x="41" y="38.5" font-size="13" fill="{T['muted']}">{html.escape(label)}</text>
-  <text x="24" y="74" font-size="18" font-weight="700" fill="{T['ink']}">{title}</text>
-  <text font-size="14.5" fill="{T['ink']}" fill-opacity="0.88">{lines}</text>""")
+  <text x="41" y="38.5" font-size="13" fill="{palette['muted']}">{html.escape(label)}</text>
+  <text x="24" y="74" font-size="18" font-weight="700" fill="{palette['ink']}">{title}</text>
+  <text font-size="14.5" fill="{palette['ink']}" fill-opacity="0.88">{lines}</text>""")
 
 
-def project(T, name, suffix, language, summary, h):
+def project(palette, name, suffix, language, summary, h):
     """1 project: language, name and summary, with a tiny rising star chart in the corner."""
     e = html.escape
     chart = " ".join(f"{x},{y}" for x, y in MOTIF)
     dots = "".join(f'<circle cx="{x}" cy="{y}" r="{2.8 if i == len(MOTIF) - 1 else 1.9}"/>' for i, (x, y) in enumerate(MOTIF))
-    corner = (f'  <polyline points="{chart}" fill="none" stroke="{T["line"]}" stroke-width="1.2" stroke-opacity="0.55"/>\n'
-              f'  <g fill="{T["star"]}">{dots}</g>')
-    title = e(name) + (f' <tspan font-weight="400" fill="{T["muted"]}">{e(suffix)}</tspan>' if suffix else "")
-    return card(T, 440, h, language, LANGUAGES[language], title, summary, corner,
+    corner = (f'  <polyline points="{chart}" fill="none" stroke="{palette["line"]}" stroke-width="1.2" stroke-opacity="0.55"/>\n'
+              f'  <g fill="{palette["star"]}">{dots}</g>')
+    title = e(name) + (f' <tspan font-weight="400" fill="{palette["muted"]}">{e(suffix)}</tspan>' if suffix else "")
+    return card(palette, 440, h, language, LANGUAGES[language], title, summary, corner,
                 f"{name} {suffix}".strip() + f", {language}: {summary}")
 
 
-def moon(T, cx, cy):
+def moon(palette, cx, cy):
     """The portfolio site's moon, lit from the top left, with 2 craters and a few stars beside it."""
     return f"""  <defs>
     <radialGradient id="moon" cx="0.38" cy="0.34" r="0.75">
       <stop offset="0" stop-color="#f5f2e4"/><stop offset="0.55" stop-color="#d9d6c6"/><stop offset="1" stop-color="#b7b4a4"/>
     </radialGradient>
     <radialGradient id="glow">
-      <stop offset="0.6" stop-color="{T['glow']}" stop-opacity="{T['glow_opacity']}"/><stop offset="1" stop-color="{T['glow']}" stop-opacity="0"/>
+      <stop offset="0.6" stop-color="{palette['glow']}" stop-opacity="{palette['glow_opacity']}"/><stop offset="1" stop-color="{palette['glow']}" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <circle cx="{cx}" cy="{cy}" r="36" fill="url(#glow)"/>
-  <circle cx="{cx}" cy="{cy}" r="22" fill="url(#moon)" stroke="{T['moon_edge']}" stroke-width="1"/>
+  <circle cx="{cx}" cy="{cy}" r="22" fill="url(#moon)" stroke="{palette['moon_edge']}" stroke-width="1"/>
   <g fill="#b7b4a4" fill-opacity="0.6"><circle cx="{cx - 7}" cy="{cy - 6}" r="5"/><circle cx="{cx + 9}" cy="{cy + 7}" r="3.2"/></g>
-  <g fill="{T['star']}"><circle cx="{cx - 58}" cy="{cy - 14}" r="1.9"/><circle cx="{cx - 44}" cy="{cy + 16}" r="1.4"/><circle cx="{cx - 80}" cy="{cy + 4}" r="1.2"/></g>"""
+  <g fill="{palette['star']}"><circle cx="{cx - 58}" cy="{cy - 14}" r="1.9"/><circle cx="{cx - 44}" cy="{cy + 16}" r="1.4"/><circle cx="{cx - 80}" cy="{cy + 4}" r="1.2"/></g>"""
 
 
-def strip(T, text, w=440):
+def strip(palette, text, w=440):
     """A link bar under a card, such as 'See my merged changes'; cards that share one differ only in the link."""
-    return svg(w, 40, text, f"""  <rect x="1" y="1" width="{w - 2}" height="38" rx="10" fill="{T['strip']}" stroke="{T['edge']}" stroke-width="1.5"/>
-  <text x="{w // 2}" y="25" text-anchor="middle" font-size="14" font-weight="500" fill="{T['link']}">{html.escape(text)}</text>""")
+    return svg(w, 40, text, f"""  <rect x="1" y="1" width="{w - 2}" height="38" rx="10" fill="{palette['strip']}" stroke="{palette['edge']}" stroke-width="1.5"/>
+  <text x="{w // 2}" y="25" text-anchor="middle" font-size="14" font-weight="500" fill="{palette['link']}">{html.escape(text)}</text>""")
 
 
-def header(T, organisation, count=""):
+def header(palette, organisation, count=""):
     """The organisation's name, a rule, and how many projects follow if any, lined up with the cards' text."""
     rule_start = round(31 + len(organisation) * 13.8 + 18)                 # 13.8 is roughly 1 bold 24px character
     rule_end = round(867 - len(count) * 7 - 18) if count else 867          # 7 is roughly 1 regular 13px character
-    tally = f'\n  <text x="867" y="37" text-anchor="end" font-size="13" fill="{T["muted"]}">{count}</text>' if count else ""
-    return svg(900, 64, organisation, f"""  <text x="31" y="41" font-size="24" font-weight="700" fill="{T['ink']}">{html.escape(organisation)}</text>
-  <line x1="{rule_start}" y1="32" x2="{rule_end}" y2="32" stroke="{T['rule']}" stroke-width="1.5"/>{tally}""")
+    tally = f'\n  <text x="867" y="37" text-anchor="end" font-size="13" fill="{palette["muted"]}">{count}</text>' if count else ""
+    return svg(900, 64, organisation, f"""  <text x="31" y="41" font-size="24" font-weight="700" fill="{palette['ink']}">{html.escape(organisation)}</text>
+  <line x1="{rule_start}" y1="32" x2="{rule_end}" y2="32" stroke="{palette['rule']}" stroke-width="1.5"/>{tally}""")
 
 
 def picture(name, alt, width):
@@ -305,11 +305,11 @@ def portfolio():
     url, name, summary = SITE
     w = 2 * 440
     h = 126 + 21 * (len(wrap(summary, w)) - 1)
-    for theme, T in CARD_THEMES.items():
-        (CARDS / f"portfolio-{theme}.svg").write_text(header(T, "Portfolio"))
+    for theme, palette in CARD_THEMES.items():
+        (CARDS / f"portfolio-{theme}.svg").write_text(header(palette, "Portfolio"))
         (CARDS / f"site-{theme}.svg").write_text(
-            card(T, w, h, "Website", T["star"], html.escape(name), summary, moon(T, w - 46, 40), f"{name}, my portfolio: {summary}"))
-        (CARDS / f"visit-{theme}.svg").write_text(strip(T, "Visit my portfolio", w))
+            card(palette, w, h, "Website", palette["star"], html.escape(name), summary, moon(palette, w - 46, 40), f"{name}, my portfolio: {summary}"))
+        (CARDS / f"visit-{theme}.svg").write_text(strip(palette, "Visit my portfolio", w))
     return (f'<p align="center">{picture("portfolio", "Portfolio", "100%")}</p>\n\n'
             f'<p align="center">\n<a href="{url}">{picture("site", f"{name}, my portfolio: {summary}", "98.5%")}</a>\n<br>\n'
             f'<a href="{url}">{picture("visit", "Visit my portfolio", "98.5%")}</a>\n</p>')
@@ -320,21 +320,21 @@ def work_cards():
     for old in CARDS.glob("*.svg"):
         old.unlink()
     CARDS.mkdir(exist_ok=True)
-    for theme, T in CARD_THEMES.items():
-        (CARDS / f"merged-{theme}.svg").write_text(strip(T, "See my merged changes"))
+    for theme, palette in CARD_THEMES.items():
+        (CARDS / f"merged-{theme}.svg").write_text(strip(palette, "See my merged changes"))
     sections = []
     for organisation, projects in WORK:
         count = f"{len(projects)} selected project{'s' if len(projects) != 1 else ''}"
-        for theme, T in CARD_THEMES.items():
-            (CARDS / f"{slug(organisation)}-{theme}.svg").write_text(header(T, organisation, count))
+        for theme, palette in CARD_THEMES.items():
+            (CARDS / f"{slug(organisation)}-{theme}.svg").write_text(header(palette, organisation, count))
         rows = [f'<p align="center">{picture(slug(organisation), organisation, "100%")}</p>']
         for i in range(0, len(projects), 2):
             row = projects[i:i + 2]
             h = 126 + 21 * (max(len(wrap(p[4])) for p in row) - 1)   # both cards in a row share a height
             cards, strips = [], []
             for repo, name, suffix, language, summary in row:
-                for theme, T in CARD_THEMES.items():
-                    (CARDS / f"{slug(name)}-{theme}.svg").write_text(project(T, name, suffix, language, summary, h))
+                for theme, palette in CARD_THEMES.items():
+                    (CARDS / f"{slug(name)}-{theme}.svg").write_text(project(palette, name, suffix, language, summary, h))
                 title = f"{name} {suffix}".strip()
                 cards.append(f'<a href="https://github.com/{repo}">'
                              f'{picture(slug(name), f"{title}, {language}: {summary}", "49%")}</a>')

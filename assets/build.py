@@ -14,7 +14,7 @@ from pathlib import Path
 
 OUT = Path(__file__).parent
 # the constellation's colours, shared by the banner and the project cards so the 2 always match
-CHART = {"dark": dict(star="#ffd772", line="#8ea6dc"), "light": dict(star="#c98a12", line="#6d80a6")}
+CHART = {"dark": {"star": "#ffd772", "line": "#8ea6dc"}, "light": {"star": "#c98a12", "line": "#6d80a6"}}
 LABELS = {"dark": "#c8d3ec", "light": "#34425c"}     # the banner's skill names
 SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
 
@@ -197,12 +197,12 @@ SITE = ("https://moonboi9001.github.io/", "moonboi9001.github.io",
         "own Graph indexer and archive nodes.")
 LANGUAGES = {"Rust": "#dea584", "Python": "#3572A5", "Go": "#00ADD8", "TypeScript": "#3178c6"}  # GitHub's colours
 CARD_THEMES = {
-    "light": dict(top="#eaf0fa", bottom="#fbfaf7", edge="#d1d9e0", ink="#1f2328", muted="#59636e", line=CHART["light"]["line"],
-                  star=CHART["light"]["star"], strip="#f6f8fa", link="#0969da", rule="#d1d9e0",
-                  glow="#ffffff", glow_opacity="0.9", moon_edge="#c4bfb3"),
-    "dark": dict(top="#121b31", bottom="#0d1117", edge="#2e3a52", ink="#f0f6fc", muted="#9198a1", line=CHART["dark"]["line"],
-                 star=CHART["dark"]["star"], strip="#151b23", link="#4493f8", rule="#3d444d",
-                 glow="#f5f2e4", glow_opacity="0.14", moon_edge="#b7b4a4"),
+    "light": {"top": "#eaf0fa", "bottom": "#fbfaf7", "edge": "#d1d9e0", "ink": "#1f2328", "muted": "#59636e",
+              "line": CHART["light"]["line"], "star": CHART["light"]["star"], "strip": "#f6f8fa", "link": "#0969da",
+              "rule": "#d1d9e0", "glow": "#ffffff", "glow_opacity": "0.9", "moon_edge": "#c4bfb3"},
+    "dark": {"top": "#121b31", "bottom": "#0d1117", "edge": "#2e3a52", "ink": "#f0f6fc", "muted": "#9198a1",
+             "line": CHART["dark"]["line"], "star": CHART["dark"]["star"], "strip": "#151b23", "link": "#4493f8",
+             "rule": "#3d444d", "glow": "#f5f2e4", "glow_opacity": "0.14", "moon_edge": "#b7b4a4"},
 }
 MERGED = "/pulls?q=is%3Apr+author%3AMoonBoi9001+is%3Amerged"
 CARDS = OUT / "cards"

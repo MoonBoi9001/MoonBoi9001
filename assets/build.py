@@ -316,6 +316,21 @@ def portfolio():
             f'<a href="{url}">{picture("visit", "Visit my portfolio", "98.5%")}</a>\n</p>')
 
 
+def card_row(row):
+    """Write a row of up to 2 project cards at the taller card's height, and return its README markup."""
+    h = 126 + 21 * (max(len(wrap(p[4])) for p in row) - 1)
+    cards, strips = [], []
+    for repo, name, suffix, language, summary in row:
+        for theme, palette in CARD_THEMES.items():
+            (CARDS / f"{slug(name)}-{theme}.svg").write_text(project(palette, name, suffix, language, summary, h))
+        title = f"{name} {suffix}".strip()
+        cards.append(f'<a href="https://github.com/{repo}">'
+                     f'{picture(slug(name), f"{title}, {language}: {summary}", "49%")}</a>')
+        strips.append(f'<a href="https://github.com/{repo}{MERGED}">'
+                      f'{picture("merged", f"See my merged changes to {name}", "49%")}</a>')
+    return '<p align="center">\n' + "\n".join(cards) + "\n<br>\n" + "\n".join(strips) + "\n</p>"
+
+
 def work_cards():
     """Write every card, strip and header as a light and dark SVG, and return the README markup for them."""
     for old in CARDS.glob("*.svg"):
@@ -329,19 +344,7 @@ def work_cards():
         for theme, palette in CARD_THEMES.items():
             (CARDS / f"{slug(organisation)}-{theme}.svg").write_text(header(palette, organisation, count))
         rows = [f'<p align="center">{picture(slug(organisation), organisation, "100%")}</p>']
-        for i in range(0, len(projects), 2):
-            row = projects[i:i + 2]
-            h = 126 + 21 * (max(len(wrap(p[4])) for p in row) - 1)   # both cards in a row share a height
-            cards, strips = [], []
-            for repo, name, suffix, language, summary in row:
-                for theme, palette in CARD_THEMES.items():
-                    (CARDS / f"{slug(name)}-{theme}.svg").write_text(project(palette, name, suffix, language, summary, h))
-                title = f"{name} {suffix}".strip()
-                cards.append(f'<a href="https://github.com/{repo}">'
-                             f'{picture(slug(name), f"{title}, {language}: {summary}", "49%")}</a>')
-                strips.append(f'<a href="https://github.com/{repo}{MERGED}">'
-                              f'{picture("merged", f"See my merged changes to {name}", "49%")}</a>')
-            rows.append('<p align="center">\n' + "\n".join(cards) + "\n<br>\n" + "\n".join(strips) + "\n</p>")
+        rows += [card_row(projects[i:i + 2]) for i in range(0, len(projects), 2)]
         sections.append("\n\n".join(rows))
     sections.append(portfolio())
     print(f"wrote {len(list(CARDS.glob('*.svg')))} card SVGs")

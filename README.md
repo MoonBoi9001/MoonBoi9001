@@ -3,13 +3,15 @@
 <picture><source media="(prefers-color-scheme: dark)" srcset="./assets/banner-dark.svg"><img src="./assets/banner-light.svg" alt="A quiet moonscape: a small robot with a telescope watches a constellation shaped like a rising chart draw itself across the sky, with a star for each of Rust, Python, Go, TypeScript, SQL, PostgreSQL, GraphQL, Docker, Kafka, Redpanda, Ansible, Kubernetes, Proxmox and Solidity, and the caption reads: star chart, not price chart. After 20 seconds, little green aliens rise out of the moon, gather under the robot, crowd surf it off the left edge and throw it to the ringed planet"></picture>
 # Samuel Metcalfe
 
-**Software engineer: reliable distributed systems, payments infrastructure and blockchain protocols**
+I'm a software engineer open to software engineering roles, remote or in person. 
 
-Open to software engineering roles, remote and relocating. Reach me by email: `contact[at]samuelmetcalfe[dot]com`.
+I've specialised in backend infrastructure for blockchain protocols. 
+
+Reach me by email to setup a call: 
+
+`contact[at]samuelmetcalfe[dot]com`
 
 </div>
-
-I'm a software engineer who has specialised in backend infrastructure for blockchain protocols. Most of my recent public work has been building Direct Indexing Payments (DIPs) for The Graph.
 
 ---
 
